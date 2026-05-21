@@ -1,0 +1,106 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background-color: #121212;
+    color: white;
+    min-height: 100vh;
+}
+
+/* Container */
+.container{
+    width: 90%;
+    margin: auto;
+    padding: 40px 0;
+}
+
+/* Topbar */
+.topbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.topbar h1{
+    font-size: 36px;
+    color: #e63946;
+}
+
+.topbar input{
+    padding: 12px;
+    width: 250px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* Cards */
+.cards-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.account-card{
+    background-color: #1e1e1e;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.account-card:hover{
+    transform: translateY(-5px);
+}
+
+.account-card h2{
+    margin-bottom: 15px;
+    color: #ffb703;
+}
+
+.account-card p{
+    margin-bottom: 10px;
+    color: #ddd;
+}
+
+/* Buttons */
+.buttons{
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.view-btn{
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #457b9d;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.view-btn:hover{
+    background-color: #5a9ec9;
+}
+
+.edit-btn{
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e63946;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.edit-btn:hover{
+    background-color: #ff4d5a;
+}
