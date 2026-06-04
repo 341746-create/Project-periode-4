@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Theater - Overzicht Voorstellingen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark text-gray-100 min-h-screen font-sans">
+
+    <div class="container">
+        <header class="header-main">
+            <h1>Overzicht Voorstellingen</h1>
+            <a href="index.html" class="btn-secondary">Terug naar Beheer</a>
+        </header>
+
+        <div class="table-container">
+            <table class="theater-table">
+                <thead>
+                    <tr>
+                        <th>Voorstelling</th>
+                        <th>Datum</th>
+                        <th>Tijd</th>
+                        <th>Zaal</th>
+                        <th class="text-right">Acties</th>
+                    </tr>
+                </thead>
+                <tbody id="voorstellingen-lijst">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="voorstellingen.js"></script>
+</body>
+</html>
