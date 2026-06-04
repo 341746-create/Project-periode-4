@@ -1,95 +1,100 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Aurora Theater - Tickets</title>
-
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater Login | Stage & Screen</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header class="header">
-<nav class="nav container">
+    <div class="theater-bg-container">
+        <img src="defocused-background-luxurious-private-cinema-600nw-2599415605.webp" alt="Luxurious Private Cinema Background" class="theater-image">
+        <div class="background-overlay"></div>
+    </div>
 
-<div class="logo">
-<i class="fa-solid fa-masks-theater"></i>
-Aurora Theater
-</div>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Welcome Back</h2>
+            <p>Reserve your seat under the spotlight</p>
+        </div>
 
-<ul class="nav-links">
-<li><a href="#">Home</a></li>
-<li><a href="#">Shows</a></li>
-<li><a href="#">Tickets</a></li>
-</ul>
+        <form class="login-form" id="loginForm">
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="email" placeholder="e.g., name@example.com" required>
+                </div>
+            </div>
 
-<div class="nav-actions">
-<button class="btn btn--ghost">Login</button>
-<button class="btn btn--primary">Reserveren</button>
-</div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <button type="button" id="togglePassword" class="toggle-password">
+                        <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
 
-</nav>
-</header>
+            <div class="form-actions">
+                <label class="remember-me">
+                    <input type="checkbox" id="remember">
+                    Remember me
+                </label>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
 
-<main class="page">
+            <button type="submit" class="btn-login">
+                Sign In <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
 
-<div class="card">
+        <div class="login-footer">
+            <p>New to the theater? <a href="#" id="createAccountLink">Create an account</a></p>
+        </div>
+    </div>
 
-<div class="card-header">
-<span class="badge">Aurora Experience</span>
-<h1>🎭 Ticket Reserveren</h1>
-<p>Reserveer je plek snel en eenvoudig</p>
-</div>
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2>Join the Theater</h2>
+            <p>Create an account for premium seat booking</p>
+            
+            <form id="registerForm">
+                <div class="input-group">
+                    <label for="regName">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user input-icon"></i>
+                        <input type="text" id="regName" placeholder="Your name" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="regEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope input-icon"></i>
+                        <input type="email" id="regEmail" placeholder="name@example.com" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="regPassword">Create Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="regPassword" placeholder="Choose a secure password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login">Register Now</button>
+            </form>
+        </div>
+    </div>
 
-<form id="ticketForm">
-
-<div class="form-group">
-<label>Naam</label>
-<input type="text" id="naam" placeholder="Jouw naam">
-</div>
-
-<div class="form-group">
-<label>E-mail</label>
-<input type="email" id="email" placeholder="jouw@email.com">
-</div>
-
-<div class="form-group">
-<label>Voorstelling</label>
-<select id="voorstelling">
-<option value="">Kies voorstelling</option>
-<option>Modern Drama</option>
-<option>Musical Night</option>
-<option>Shakespeare</option>
-</select>
-</div>
-
-<div class="form-group calendar-wrap">
-<label>Datum</label>
-<input type="text" id="datumInput" placeholder="Selecteer datum" readonly>
-<div class="calendar" id="calendar"></div>
-</div>
-
-<div class="form-group">
-<label>Aantal tickets</label>
-<input type="number" id="tickets" value="1" min="1" max="10">
-</div>
-
-<button class="btn btn--primary full" type="submit">
-Reserveer Tickets
-</button>
-
-</form>
-
-<div id="melding"></div>
-
-</div>
-
-</main>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

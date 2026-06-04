@@ -1,147 +1,133 @@
-const form = document.getElementById("ticketForm");
-const melding = document.getElementById("melding");
+document.addEventListener('DOMContentLoaded', () => {
+    // Main Login Selectors
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
 
-const datumInput = document.getElementById("datumInput");
-const calendar = document.getElementById("calendar");
-const ticketsInput = document.getElementById("tickets");
+    // Registration Modal Selectors
+    const modal = document.getElementById('registerModal');
+    const openModalBtn = document.getElementById('createAccountLink');
+    const closeModalBtn = document.getElementById('closeModal');
+    const registerForm = document.getElementById('registerForm');
 
-let selectedDate = null;
-let ticketCount = 1;
-
-/* OPEN CALENDAR */
-datumInput.addEventListener("click", (e) => {
-    e.stopPropagation();
-    calendar.style.display = "block";
-    renderCalendar();
-});
-
-/* CLOSE OUTSIDE */
-document.addEventListener("click", (e) => {
-    if (!calendar.contains(e.target) && e.target !== datumInput) {
-        calendar.style.display = "none";
-    }
-});
-
-/* CALENDAR */
-function renderCalendar() {
-    calendar.innerHTML = "";
-
-    const now = new Date();
-
-    const months = [
-        "Januari","Februari","Maart","April","Mei","Juni",
-        "Juli","Augustus","September","Oktober","November","December"
-    ];
-
-    const header = document.createElement("div");
-    header.className = "calendar-header";
-    header.textContent = `${months[now.getMonth()]} ${now.getFullYear()}`;
-    calendar.appendChild(header);
-
-    const week = document.createElement("div");
-    week.className = "weekdays";
-
-    ["Ma","Di","Wo","Do","Vr","Za","Zo"].forEach(d => {
-        const el = document.createElement("div");
-        el.textContent = d;
-        week.appendChild(el);
-    });
-
-    calendar.appendChild(week);
-
-    const grid = document.createElement("div");
-    grid.className = "calendar-grid";
-
-    const today = new Date();
-
-    for (let i = 0; i < 14; i++) {
-        const date = new Date();
-        date.setDate(today.getDate() + i);
-
-        const day = document.createElement("div");
-        day.className = "day";
-        day.textContent = date.getDate();
-
-        day.addEventListener("click", (e) => {
-            e.stopPropagation();
-
-            selectedDate = date.toISOString().split("T")[0];
-
-            datumInput.value =
-                `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
-
-            calendar.style.display = "none";
+    /* ==========================================
+       1. PASSWORD VISIBILITY TOGGLE (EYE ICON)
+       ========================================== */
+    if (togglePasswordBtn && passwordInput && eyeIcon) {
+        togglePasswordBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isPassword = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            
+            if (isPassword) {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
         });
-
-        grid.appendChild(day);
     }
 
-    calendar.appendChild(grid);
-}
+    /* ==========================================
+       2. REGISTRATION SYSTEM (Saves to LocalStorage)
+       ========================================== */
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-/* STEP SYSTEM */
-const wrapper = ticketsInput.parentElement;
+            // Grabbing unique input field values by ID mapping
+            const regName = document.getElementById('regName').value.trim();
+            const regEmail = document.getElementById('regEmail').value.trim().toLowerCase();
+            const regPassword = document.getElementById('regPassword').value;
 
-const stepper = document.createElement("div");
-stepper.className = "stepper";
+            // Simple data field completeness validation check
+            if (!regName || !regEmail || !regPassword) {
+                alert("Please fill in all registration fields.");
+                return;
+            }
 
-stepper.innerHTML = `
-<button type="button" id="minus">−</button>
-<span id="count">1</span>
-<button type="button" id="plus">+</button>
-`;
+            // Look up if user database key already exists inside system memory
+            const existingUser = localStorage.getItem(regEmail);
+            if (existingUser) {
+                alert("An account with this email address already exists!");
+                return;
+            }
 
-ticketsInput.style.display = "none";
-wrapper.appendChild(stepper);
+            // Bundle structural user settings object data values
+            const userData = {
+                name: regName,
+                email: regEmail,
+                password: regPassword
+            };
 
-const countEl = document.getElementById("count");
-
-function showError(msg){
-    melding.style.display = "block";
-    melding.className = "error";
-    melding.textContent = msg;
-}
-
-document.getElementById("plus").addEventListener("click", () => {
-    if (ticketCount >= 10) {
-        showError("⚠️ Maximum 10 tickets per reservering.");
-        return;
-    }
-    ticketCount++;
-    countEl.textContent = ticketCount;
-});
-
-document.getElementById("minus").addEventListener("click", () => {
-    if (ticketCount > 1) {
-        ticketCount--;
-        countEl.textContent = ticketCount;
-    }
-});
-
-/* FORM */
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const naam = document.getElementById("naam").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const voorstelling = document.getElementById("voorstelling").value;
-
-    /* UNHAPPY ENDING */
-    if (!naam || !email || !voorstelling || !selectedDate) {
-        melding.style.display = "block";
-        melding.className = "error";
-        melding.textContent = "👎 Onvolledige reservering. Vul alle velden in.";
-        return;
+            // Set account strings securely into client local environment mapping keys
+            localStorage.setItem(regEmail, JSON.stringify(userData));
+            alert(`Account created successfully for ${regName}! You can now sign in.`);
+            
+            // Clear out register fields and transition off popup modal overlay panel
+            registerForm.reset();
+            if (modal) modal.style.display = 'none';
+        });
     }
 
-    /* HAPPY ENDING */
-    melding.style.display = "block";
-    melding.className = "success";
-    melding.textContent =
-        `🎉 Geslaagd! ${naam}, je hebt ${ticketCount} ticket(s) voor ${voorstelling} op ${selectedDate}.`;
+    /* ==========================================
+       3. AUTHENTICATION CONTROLLER SYSTEM
+       ========================================== */
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const enteredEmail = emailInput.value.trim().toLowerCase();
+            const enteredPassword = passwordInput.value;
 
-    form.reset();
-    ticketCount = 1;
-    countEl.textContent = ticketCount;
-    selectedDate = null;
+            // Fetch stored string object dataset from system keys
+            const savedUserDataJSON = localStorage.getItem(enteredEmail);
+
+            if (!savedUserDataJSON) {
+                alert("No profile account found matching this email. Please register an account first!");
+                return;
+            }
+
+            // Convert raw structural string data formats into functional JSON data sets
+            const savedUser = JSON.parse(savedUserDataJSON);
+
+            // Conditional access verification validation matches processing
+            if (enteredPassword === savedUser.password) {
+                alert(`Login Successful! Welcome back under the spotlight, ${savedUser.name}!`);
+                loginForm.reset();
+                
+                // Route landing handler redirect strings layout placement:
+                // window.location.href = 'home.html';
+            } else {
+                alert("Incorrect password choice! Please verify inputs and try again.");
+                passwordInput.value = "";
+                passwordInput.focus();
+            }
+        });
+    }
+
+    /* ==========================================
+       4. MODAL VISIBILITY HANDLERS
+       ========================================== */
+    if (openModalBtn && modal) {
+        openModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
+    }
+
+    if (closeModalBtn && modal) {
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 });
