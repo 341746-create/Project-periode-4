@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Beheer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>🎭 Ticket Beheer</h1>
+
+    <div class="form">
+        <input type="text" id="ticketCode" placeholder="Ticketcode">
+        <input type="text" id="ticketNaam" placeholder="Naam bezoeker">
+        <button onclick="addTicket()">Ticket toevoegen</button>
+    </div>
+
+    <div id="message"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ticketcode</th>
+                <th>Naam</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody id="ticketTable"></tbody>
+    </table>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
