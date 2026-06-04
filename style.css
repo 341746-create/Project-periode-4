@@ -1,0 +1,353 @@
+/* Core Structural Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #060202;
+    overflow: hidden;
+}
+
+/* Base Fullscreen Environment */
+.theater-dashboard-container {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(180deg, rgba(6, 2, 2, 0.5) 0%, rgba(0, 0, 0, 0.95) 100%), 
+                url('defocused-background-luxurious-private-cinema-600nw-2599415605.webp') no-repeat center center fixed;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+/* High-End Glassmorphic Dashboard Split */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    width: 100%;
+    max-width: 900px;
+    height: 560px;
+    background: rgba(18, 7, 6, 0.8); /* Velvet transparent base tint */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 28px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.95), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
+    overflow: hidden;
+}
+
+/* Layout Columns */
+.panel {
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Left Side Control Panel Layout */
+.profile-side {
+    background: rgba(0, 0, 0, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+/* Dramatic Spotlight Ring Effect */
+.pulsing-glow-ring {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e50914, #ffaa00);
+    padding: 3px;
+    display: inline-block;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(229, 9, 20, 0.4);
+    animation: pulseSpotlight 3s infinite ease-in-out;
+}
+
+.avatar-ring-inner {
+    background: #120706;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem;
+    color: #ffffff;
+}
+
+.spotlight-header h2 {
+    color: #807270;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.text-neon-glow {
+    color: #ffffff;
+    font-family: 'Georgia', serif;
+    font-size: 2.4rem;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.badge-vip-glow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(229, 9, 20, 0.15);
+    border: 1px solid rgba(229, 9, 20, 0.4);
+    color: #ff3333;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.navigation-zone {
+    width: 100%;
+}
+
+/* Neon Interaction Button */
+.btn-neon-secondary {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-neon-secondary:hover {
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.email-footer {
+    color: #594d4c;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Right Side Feed Area Configuration */
+.experience-side {
+    justify-content: flex-start;
+}
+
+.dynamic-scroll-area {
+    overflow-y: auto;
+}
+.dynamic-scroll-area::-webkit-scrollbar { width: 5px; }
+.dynamic-scroll-area::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+
+.section-title-neon {
+    color: #ffffff;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    opacity: 0.8;
+}
+
+/* The Ticket Stack Container */
+.notifications-ticket-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* FUN INTERACTIVE TRAILING TICKET EFFECT */
+.neon-ticket-card {
+    position: relative;
+    display: flex;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+}
+
+/* The Fun Part: Hover interactive effect triggers dramatic color lift */
+.neon-ticket-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Dynamic color triggers on hover */
+.neon-ticket-card.gold-neon-border:hover {
+    border-color: #ffaa00;
+    box-shadow: 0 15px 35px rgba(255, 170, 0, 0.15), 0 0 15px rgba(255, 170, 0, 0.1);
+}
+
+.neon-ticket-card.red-neon-border:hover {
+    border-color: #e50914;
+    box-shadow: 0 15px 35px rgba(229, 9, 20, 0.15), 0 0 15px rgba(229, 9, 20, 0.1);
+}
+
+/* Left side stub accents */
+.ticket-side-accent {
+    width: 12px;
+    height: auto;
+}
+.gold-gradient-bg { background: linear-gradient(#ffaa00, #ff5500); }
+.red-gradient-bg { background: linear-gradient(#e50914, #990000); }
+
+/* Main Content elements within ticket */
+.ticket-body-content {
+    padding: 22px 28px;
+    flex: 1;
+}
+
+.ticket-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.badge-ticket-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.gold-text { color: #ffaa00; }
+.red-text { color: #ff3333; }
+
+.ticket-timestamp-tag {
+    color: #665654;
+    font-size: 0.75rem;
+}
+
+.ticket-main-title {
+    color: #ffffff;
+    font-family: 'Georgia', serif;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.ticket-description-text {
+    color: #bfaaa8;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.ticket-description-text strong {
+    color: #ffffff;
+}
+
+/* Physical Notch Cutouts for Ticket aesthetic */
+.notch {
+    position: absolute;
+    right: 80px; /* Aligns visually near the right border edge */
+    width: 14px;
+    height: 14px;
+    background: #120706; /* Cuts a hole straight through the graphic layout */
+    border-radius: 50%;
+}
+.top-notch { top: -7px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.bottom-notch { bottom: -7px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+
+/* Custom dynamic border connecting the two cut notches */
+.neon-ticket-card::after {
+    content: '';
+    position: absolute;
+    right: 86px;
+    top: 7px;
+    bottom: 7px;
+    border-right: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* Floating Status Indicators on right side edge */
+.neon-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 25px;
+}
+.gold-dot-glow { background: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+.red-dot-glow { background: #e50914; box-shadow: 0 0 10px #e50914; }
+
+/* Clear All row links */
+.feed-footer-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+.action-link-clean {
+    background: none;
+    border: none;
+    color: #665654;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.action-link-clean:hover {
+    color: #ff3333;
+}
+
+/* Animations */
+.animate-stage-entrance {
+    animation: stageEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes stageEntrance {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes pulseSpotlight {
+    0%, 100% { box-shadow: 0 0 25px rgba(229, 9, 20, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(229, 9, 20, 0.6); }
+}
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .profile-side {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .notch, .neon-ticket-card::after { display: none; }
+}

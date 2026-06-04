@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meldingen - Theater Spotlight</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="theater-dashboard-container">
+        <div class="dashboard-grid animate-stage-entrance">
+            
+            <div class="panel profile-side">
+                <div class="spotlight-header">
+                    <div class="pulsing-glow-ring">
+                        <div class="avatar-ring-inner">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                    </div>
+                    <h2>Jouw Updates,</h2>
+                    <h3 class="user-name text-neon-glow">Meldingen</h3>
+                    <span class="badge-vip-glow" id="notificationCounter">
+                        <i class="fa-solid fa-bolt-lightning"></i> <span class="count-num">2</span> Actief
+                    </span>
+                </div>
+
+                <div class="navigation-zone">
+                    <a href="overzicht.html" class="btn-neon-secondary">
+                        <i class="fa-solid fa-chevron-left"></i> Terug naar Account
+                    </a>
+                </div>
+
+                <p class="email-footer"><i class="fa-solid fa-circle-nodes"></i> Spotlight Live Verbinding</p>
+            </div>
+
+            <div class="panel experience-side dynamic-scroll-area">
+                <h4 class="section-title-neon">Belangrijke Updates</h4>
+                
+                <div class="notifications-ticket-stack">
+                    
+                    <div class="neon-ticket-card gold-neon-border unread-ticket">
+                        <div class="ticket-side-accent gold-gradient-bg"></div>
+                        
+                        <div class="ticket-body-content">
+                            <div class="ticket-top-row">
+                                <span class="badge-ticket-tag gold-text"><i class="fa-solid fa-ticket-simple"></i> Live Reservering</span>
+                                <span class="ticket-timestamp-tag">Binnen 2 dagen</span>
+                            </div>
+                            <h2 class="ticket-main-title">Avatar: The Way of Water</h2>
+                            <p class="ticket-description-text">Je gereserveerde luxe stoelen staan klaar! De rode loper opent vrijdag om 20:15 uur in <strong>Zaal 3</strong>.</p>
+                        </div>
+                        
+                        <div class="notch top-notch"></div>
+                        <div class="notch bottom-notch"></div>
+                        <div class="neon-pulse-dot gold-dot-glow"></div>
+                    </div>
+
+                    <div class="neon-ticket-card red-neon-border unread-ticket">
+                        <div class="ticket-side-accent red-gradient-bg"></div>
+                        
+                        <div class="ticket-body-content">
+                            <div class="ticket-top-row">
+                                <span class="badge-ticket-tag red-text"><i class="fa-solid fa-shield-halved"></i> Security</span>
+                                <span class="ticket-timestamp-tag">1 uur geleden</span>
+                            </div>
+                            <h2 class="ticket-main-title">Nieuw Apparaat Gedetecteerd</h2>
+                            <p class="ticket-description-text">Er is een succesvolle aanmelding geregistreerd op je profiel. Als jij dit niet was, raden we aan je wachtwoord aan te passen.</p>
+                        </div>
+                        
+                        <div class="notch top-notch"></div>
+                        <div class="notch bottom-notch"></div>
+                        <div class="neon-pulse-dot red-dot-glow"></div>
+                    </div>
+
+                </div>
+
+                <div class="feed-footer-actions">
+                    <button type="button" class="action-link-clean" id="markAllRead">
+                        <i class="fa-solid fa-eye"></i> Alles markeren als gelezen
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
