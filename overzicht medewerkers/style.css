@@ -1,0 +1,535 @@
+/* =====================================================================
+   Het Repertoire — Overzicht medewerkers
+   Theatre-themed "employee overview" page
+   ===================================================================== */
+
+:root {
+  --velvet-black:   #190d12;
+  --velvet-deep:    #2a1018;
+  --curtain-red:    #5c1622;
+  --curtain-red-2:  #7a1f2b;
+  --curtain-shadow: #100509;
+  --gold:           #c9a14a;
+  --gold-bright:    #e8c777;
+  --gold-dim:       #8a6f33;
+  --paper:          #f4ead6;
+  --paper-dim:      #d9cdb2;
+  --ink:            #2b1d16;
+  --error:          #c4493a;
+  --success:        #5c8a5a;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-script: 'Cormorant Garamond', Georgia, serif;
+
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--velvet-black);
+  font-family: var(--font-body);
+  color: var(--paper);
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 0%, #3a141d 0%, var(--velvet-black) 55%),
+    var(--velvet-black);
+}
+
+/* ---------------------------------------------------------------------
+   Ambient texture
+   --------------------------------------------------------------------- */
+.house-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 50% 18%, rgba(232, 199, 119, 0.10) 0%, transparent 45%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.18) 0px,
+      rgba(0,0,0,0.18) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+/* ---------------------------------------------------------------------
+   Spotlight
+   --------------------------------------------------------------------- */
+.spotlight {
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  width: 1400px;
+  height: 1400px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(244, 234, 214, 0.16) 0%, rgba(244, 234, 214, 0.05) 30%, transparent 60%);
+  z-index: 1;
+  pointer-events: none;
+  animation: spotlight-find 2.4s cubic-bezier(.16,.84,.44,1) both;
+}
+
+@keyframes spotlight-find {
+  0%   { opacity: 0; transform: translateX(-85%) scale(0.7); }
+  35%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+/* ---------------------------------------------------------------------
+   Curtain rig
+   --------------------------------------------------------------------- */
+.curtain-rig {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.valance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--curtain-red-2);
+  background-image: linear-gradient(180deg, var(--curtain-red-2) 0%, var(--curtain-red) 100%);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 55%,
+    93% 100%, 86% 55%, 79% 100%, 72% 55%, 65% 100%, 58% 55%,
+    51% 100%, 44% 55%, 37% 100%, 30% 55%, 23% 100%, 16% 55%,
+    9% 100%, 2% 55%, 0% 100%
+  );
+}
+
+.curtain {
+  position: absolute;
+  top: 0;
+  width: 22vw;
+  min-width: 180px;
+  max-width: 320px;
+  height: 46vh;
+  max-height: 420px;
+  background: linear-gradient(115deg, var(--curtain-red) 0%, var(--curtain-red-2) 35%, var(--curtain-shadow) 100%);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  opacity: 0.96;
+}
+
+.curtain--left {
+  left: 0;
+  border-radius: 0 0 60% 0 / 0 0 30% 0;
+  transform-origin: top left;
+  animation: curtain-open-left 1.6s cubic-bezier(.6,0,.4,1) both;
+}
+
+.curtain--right {
+  right: 0;
+  border-radius: 0 0 0 60% / 0 0 0 30%;
+  transform-origin: top right;
+  animation: curtain-open-right 1.6s cubic-bezier(.6,0,.4,1) both;
+}
+
+@keyframes curtain-open-left  { 0% { transform: translateX(0); } 100% { transform: translateX(-2%); } }
+@keyframes curtain-open-right { 0% { transform: translateX(0); } 100% { transform: translateX(2%); } }
+
+.curtain__fold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.28) 100%);
+  border-radius: 0 0 50% 50% / 0 0 25% 25%;
+}
+.curtain__fold:nth-child(1) { left: 2%;  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.3)); }
+.curtain__fold:nth-child(2) { left: 22%; }
+.curtain__fold:nth-child(3) { left: 42%; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.35)); }
+.curtain__fold:nth-child(4) { left: 62%; }
+.curtain__fold:nth-child(5) { left: 80%; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.3)); }
+
+/* ---------------------------------------------------------------------
+   Stage / masthead
+   --------------------------------------------------------------------- */
+.stage {
+  position: relative;
+  z-index: 3;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 110px 24px 90px;
+}
+
+.masthead {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.masthead__eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 14px;
+}
+
+.masthead__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  line-height: 1.15;
+  margin: 0 0 16px;
+  color: var(--paper);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.5);
+}
+
+.masthead__title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold-bright);
+}
+
+.masthead__sub {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--paper-dim);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------------
+   Playbill card
+   --------------------------------------------------------------------- */
+.playbill {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 56px 48px 44px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.06);
+  animation: playbill-rise 0.9s cubic-bezier(.16,.84,.44,1) 0.4s both;
+}
+
+@keyframes playbill-rise {
+  0%   { opacity: 0; transform: translateY(28px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.playbill::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.playbill__ribbon {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--curtain-red-2);
+  color: var(--gold-bright);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 8px 22px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------
+   Toolbar — search + department filter, styled as a programme index
+   --------------------------------------------------------------------- */
+.toolbar {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--paper-dim);
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field--search { flex: 2 1 260px; }
+.field--filter { flex: 1 1 200px; }
+
+.field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.field input,
+.field select {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: #fffdf8;
+  border: 1.5px solid var(--paper-dim);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.field input::placeholder { color: #a89a82; }
+
+.field input:hover, .field select:hover { border-color: var(--gold-dim); }
+.field input:focus, .field select:focus {
+  outline: none;
+  border-color: var(--curtain-red-2);
+  box-shadow: 0 0 0 3px rgba(124, 31, 43, 0.15);
+}
+
+.toolbar__actions {
+  display: flex;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: var(--radius);
+  padding: 12px 24px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--paper-dim);
+}
+.btn--ghost:hover { border-color: var(--curtain-red-2); color: var(--curtain-red-2); }
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--curtain-red-2), var(--curtain-red));
+  color: var(--gold-bright);
+  box-shadow: 0 10px 24px rgba(92, 22, 34, 0.35);
+}
+.btn--primary:hover { transform: translateY(-1px); box-shadow: 0 14px 30px rgba(92, 22, 34, 0.45); }
+.btn--primary:active { transform: translateY(0); }
+.btn:focus-visible { outline: 2px solid var(--curtain-red-2); outline-offset: 2px; }
+
+/* ---------------------------------------------------------------------
+   Roster table — the cast list
+   --------------------------------------------------------------------- */
+.roster { margin-top: 26px; }
+
+.roster__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.roster__header h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--curtain-red-2);
+  margin: 0;
+}
+
+.roster__count {
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+
+.roster__table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+}
+
+.roster__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+
+.roster__table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--curtain-red-2);
+  padding: 12px 14px;
+}
+
+.roster__table th:first-child { border-radius: var(--radius) 0 0 0; }
+.roster__table th:last-child  { border-radius: 0 var(--radius) 0 0; }
+
+.roster__table td {
+  padding: 13px 14px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--paper-dim);
+}
+
+.roster__table tbody tr {
+  background: #fffdf8;
+  transition: background 0.15s ease;
+  animation: row-in 0.4s ease both;
+}
+
+.roster__table tbody tr:nth-child(even) { background: #fbf4e6; }
+
+.roster__table tbody tr:hover {
+  background: #f3e2bd;
+  box-shadow: inset 4px 0 0 var(--curtain-red-2);
+}
+
+@keyframes row-in {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.roster__table td.cell-name { font-weight: 700; color: var(--curtain-red-2); }
+
+.cell-email {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--gold-dim);
+}
+.cell-email:hover { color: var(--curtain-red-2); }
+
+.status-pill {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: capitalize;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+.status-pill--actief   { background: rgba(92, 138, 90, 0.15); color: var(--success); }
+.status-pill--inactief { background: rgba(196, 73, 58, 0.12); color: var(--error); }
+
+.roster__empty {
+  display: none;
+  text-align: center;
+  font-family: var(--font-script);
+  font-style: italic;
+  color: var(--ink);
+  padding: 30px 0 10px;
+  margin: 0;
+}
+
+.roster:not(.has-rows) .roster__table-wrap { display: none; }
+.roster:not(.has-rows) .roster__empty { display: block; }
+
+/* ---------------------------------------------------------------------
+   Error state — "De voorstelling kan nu niet doorgaan" (Scenario 2)
+   --------------------------------------------------------------------- */
+.playbill--error {
+  text-align: center;
+  padding: 64px 48px 56px;
+  overflow: hidden;
+}
+
+.curtain-down {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, var(--curtain-red-2) 0%, var(--curtain-red) 70%, transparent 100%);
+  opacity: 0.9;
+  animation: curtain-fall 0.8s cubic-bezier(.5,0,.5,1) both;
+  transform-origin: top center;
+}
+
+@keyframes curtain-fall {
+  0%   { transform: scaleY(0); opacity: 0.4; }
+  100% { transform: scaleY(1); opacity: 0.9; }
+}
+
+.playbill__ribbon--error {
+  background: var(--ink);
+  color: var(--paper-dim);
+}
+
+.error__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  color: var(--curtain-red-2);
+  margin: 36px 0 14px;
+  position: relative;
+}
+
+.error__body {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink);
+  max-width: 440px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+
+/* ---------------------------------------------------------------------
+   Demo toggle (only relevant in the static HTML demo)
+   --------------------------------------------------------------------- */
+.demo-toggle {
+  text-align: center;
+  margin-top: 22px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--gold-dim);
+  font-size: 0.78rem;
+  text-decoration: underline;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+.link-btn:hover { color: var(--gold-bright); }
+
+/* ---------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .stage { padding: 90px 16px 70px; }
+  .playbill { padding: 44px 22px 30px; }
+  .curtain { width: 16vw; height: 30vh; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .toolbar__actions { justify-content: stretch; }
+  .toolbar__actions .btn { flex: 1; }
+}
+
+@media (max-width: 480px) {
+  .masthead__title { font-size: 1.8rem; }
+}

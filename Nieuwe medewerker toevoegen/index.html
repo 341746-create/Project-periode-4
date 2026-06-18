@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nieuwe medewerker toevoegen — Het Repertoire</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- House lights / ambient stage glow -->
   <div class="house-glow" aria-hidden="true"></div>
 
-  <!-- Curtain frame -->
   <div class="curtain-rig" aria-hidden="true">
     <div class="curtain curtain--left">
       <div class="curtain__fold"></div>
@@ -30,8 +30,7 @@
       <div class="curtain__fold"></div>
       <div class="curtain__fold"></div>
     </div>
-    <div class="valance"></div>
-  </div>
+    <div class="valance"></div> </div>
 
   <div class="spotlight" aria-hidden="true"></div>
 
@@ -57,14 +56,12 @@
           <div class="field">
             <label for="voornaam">Voornaam <span class="req">*</span></label>
             <input type="text" id="voornaam" name="voornaam" autocomplete="given-name" required>
-            <span class="field__error" data-error-for="voornaam"></span>
-          </div>
+            <span class="field__error" data-error-for="voornaam"></span> </div>
 
           <div class="field">
             <label for="achternaam">Achternaam <span class="req">*</span></label>
             <input type="text" id="achternaam" name="achternaam" autocomplete="family-name" required>
-            <span class="field__error" data-error-for="achternaam"></span>
-          </div>
+            <span class="field__error" data-error-for="achternaam"></span> </div>
 
           <div class="field field--half">
             <label for="geboortedatum">Geboortedatum</label>
@@ -75,8 +72,7 @@
           <div class="field field--half">
             <label for="personeelsnummer">Personeelsnummer <span class="req">*</span></label>
             <input type="text" id="personeelsnummer" name="personeelsnummer" placeholder="PN-1004" required>
-            <span class="field__error" data-error-for="personeelsnummer"></span>
-          </div>
+            <span class="field__error" data-error-for="personeelsnummer"></span> </div>
         </fieldset>
 
         <fieldset class="form__group">
@@ -85,8 +81,7 @@
           <div class="field">
             <label for="email">E-mailadres <span class="req">*</span></label>
             <input type="email" id="email" name="email" autocomplete="email" required>
-            <span class="field__error" data-error-for="email"></span>
-          </div>
+            <span class="field__error" data-error-for="email"></span> </div>
 
           <div class="field">
             <label for="telefoonnummer">Telefoonnummer</label>
@@ -128,8 +123,7 @@
           <div class="field">
             <label for="datum_in_dienst">Datum in dienst <span class="req">*</span></label>
             <input type="date" id="datum_in_dienst" name="datum_in_dienst" required>
-            <span class="field__error" data-error-for="datum_in_dienst"></span>
-          </div>
+            <span class="field__error" data-error-for="datum_in_dienst"></span> </div>
         </fieldset>
 
         <div class="form__actions">
@@ -160,8 +154,7 @@
             </tr>
           </thead>
           <tbody id="roster-body">
-            <!-- Cast rows are rendered here by script.js -->
-          </tbody>
+            </tbody>
         </table>
       </div>
       <p class="roster__empty" id="roster-empty">Het podium is nog leeg — voeg de eerste medewerker toe.</p>
@@ -172,9 +165,7 @@
   <div class="curtain-call" id="curtain-call" aria-hidden="true">
     <div class="curtain-call__inner">
       <p class="curtain-call__eyebrow">Welkom op de bezetting</p>
-      <p class="curtain-call__name" id="curtain-call-name"></p>
-      <p class="curtain-call__role" id="curtain-call-role"></p>
-    </div>
+      <p class="curtain-call__name" id="curtain-call-name"></p> <p class="curtain-call__role" id="curtain-call-role"></p> </div>
   </div>
 
   <script src="script.js"></script>
