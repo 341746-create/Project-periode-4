@@ -1,0 +1,291 @@
+/* Reset and Base Initialization */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background container setup */
+.theater-bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.theater-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Dark atmospheric curtain vignette overlay */
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 20%, rgba(45, 10, 10, 0.6) 70%, rgba(0, 0, 0, 0.9) 100%);
+}
+
+/* Login glassmorphism window card */
+.login-container {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 420px;
+    padding: 40px;
+    background: rgba(30, 15, 15, 0.65);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+}
+
+/* Card Header Text styling */
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+
+/* Layout field spacing blocks */
+.input-group {
+    margin-bottom: 22px;
+}
+
+.input-group label {
+    display: block;
+    color: #ffffff;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Custom styled transparent text boxes */
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 15px 14px 45px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.input-wrapper input::placeholder {
+    color: #b3b3b3;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ff3333;
+    box-shadow: 0 0 12px rgba(255, 51, 51, 0.4);
+}
+
+/* Inner field decorative vector icons */
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: #ffcccc;
+    font-size: 1.1rem;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Dynamic eye toggle button positioning */
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #ffcccc;
+    cursor: pointer;
+    font-size: 1.1rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password:hover {
+    color: #ffffff;
+}
+
+/* Form lower row utility panel layout */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 0.85rem;
+}
+
+.remember-me {
+    color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    gap: 8px;
+}
+
+.remember-me input {
+    cursor: pointer;
+    accent-color: #ff3333;
+    width: 16px;
+    height: 16px;
+}
+
+.forgot-password {
+    color: #ff4d4d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.forgot-password:hover {
+    color: #ff8080;
+    text-decoration: underline;
+}
+
+/* Premium Crimson Red Theater Buttons */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, #b30000, #e60000);
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(230, 0, 0, 0.5);
+}
+
+/* Main card footer styles */
+.login-footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: #cccccc;
+}
+
+.login-footer a {
+    color: #ff4d4d;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+    color: #ff8080;
+}
+
+/* ==========================================
+   REGISTRATION POPUP OVERLAY WINDOW (MODAL)
+   ========================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: rgba(30, 15, 15, 0.95);
+    padding: 40px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+}
+
+.modal-content h2 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.modal-content p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Close Exit Button */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #ff4d4d;
+}
