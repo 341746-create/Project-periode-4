@@ -1,127 +1,357 @@
-/* Algemene styling */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f7f6;
-    color: #222;
-    margin: 0;
-    padding: 0;
+*,*::before,*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Inter",sans-serif;
 }
 
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+body{
+    background:#07070a;
+    color:white;
+    overflow-x:hidden;
+    scroll-behavior:smooth;
 }
 
-header h1 { margin: 0; }
-
-header nav a {
-    color: white;
-    margin-left: 1rem;
-    text-decoration: none;
-    font-weight: bold;
+.container{
+    width:min(1100px,92%);
+    margin:auto;
 }
 
-header nav a:hover { text-decoration: underline; }
-
-main { padding: 2rem; }
-
-h2 { margin-bottom: 1rem; }
-
-.tickets-container {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+body::before{
+    content:"";
+    position:fixed;
+    width:600px;
+    height:600px;
+    background:#d4af37;
+    filter:blur(260px);
+    opacity:0.08;
+    top:-200px;
+    right:-200px;
+    z-index:-1;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* HEADER */
+.header{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:999;
+    backdrop-filter:blur(20px);
+    background:rgba(0,0,0,0.55);
+    border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
-table th, table td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.header-inner{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 24px;
 }
 
-table th { background-color: #34495e; color: white; }
-
-.status { font-weight: bold; }
-.status-confirmed { color: green; }
-.status-pending { color: orange; }
-.status-cancelled { color: red; }
-
-button {
-    padding: 0.4rem 0.7rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
+.logo{
+    font-weight:800;
+    font-size:1.1rem;
+    color:#fff;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
-button.edit { background-color: #3498db; color: white; }
-button.cancel { background-color: #e74c3c; color: white; }
-button:hover { opacity: 0.9; }
+.logo i{ color:#d4af37; }
 
-footer {
-    text-align: center;
-    padding: 1rem;
-    margin-top: 2rem;
-    background-color: #2c3e50;
-    color: white;
-    font-size: 0.9rem;
+.header nav{ display:flex; gap:20px; }
+.header nav a{
+    color:#aaa;
+    text-decoration:none;
+    font-size:.9rem;
+    transition:color .2s;
+}
+.header nav a:hover{ color:#d4af37; }
+
+/* MAIN */
+main{ padding:110px 16px 60px; }
+.container-main{
+    width:min(1100px,92%);
+    margin:auto;
 }
 
-/* Modal styling */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+h2{
+    font-size:1.8rem;
+    margin-bottom:24px;
 }
 
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 1.5rem;
-    border-radius: 8px;
-    width: 300px;
-    text-align: center;
+/* TABLE */
+.tickets-container{
+    background:#111;
+    border-radius:16px;
+    padding:24px;
+    border:1px solid rgba(255,255,255,0.05);
 }
 
-.close {
-    float: right;
-    font-size: 1.5rem;
-    cursor: pointer;
+.ticket-code{
+    background:rgba(212,175,55,0.1);
+    color:#d4af37;
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:.82rem;
+    font-weight:600;
+    letter-spacing:.5px;
 }
 
-.modal button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
+table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-/* Notification */
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #d4edda;
-    color: #155724;
-    padding: 1rem 1.5rem;
-    border-radius: 5px;
-    display: none;
-    font-weight: bold;
+table th,table td{
+    padding:14px 16px;
+    text-align:left;
+    border-bottom:1px solid #1a1a1a;
 }
 
-.notification.error {
-    background-color: #f8d7da;
-    color: #721c24;
+table th{
+    color:#d4af37;
+    font-weight:600;
+    font-size:.85rem;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+table td{ color:#ccc; font-size:.9rem; }
+
+table tbody tr{
+    transition:background .2s;
+}
+
+table tbody tr:hover{
+    background:rgba(255,255,255,0.02);
+}
+
+table small{
+    display:block;
+    color:#666;
+    font-size:.78rem;
+    margin-top:2px;
+}
+
+/* STATUS */
+.status{
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:.8rem;
+    display:inline-block;
+}
+
+.status-confirmed{
+    color:#2ecc71;
+    background:rgba(46,204,113,0.1);
+}
+
+.status-pending{
+    color:#f39c12;
+    background:rgba(243,156,18,0.1);
+}
+
+.status-cancelled{
+    color:#e74c3c;
+    background:rgba(231,76,60,0.1);
+}
+
+/* BUTTONS */
+button{
+    padding:8px 16px;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:.82rem;
+    font-family:"Inter",sans-serif;
+    transition:.2s;
+}
+
+button.edit{
+    background:linear-gradient(135deg,#d4af37,#f4c542);
+    color:#111;
+    margin-right:6px;
+}
+
+button.edit:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 20px rgba(212,175,55,0.25);
+}
+
+button.cancel{
+    background:rgba(231,76,60,0.15);
+    color:#e74c3c;
+}
+
+button.cancel:hover{
+    background:rgba(231,76,60,0.25);
+}
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    z-index:1000;
+    left:0;top:0;
+    width:100%;height:100%;
+    overflow:auto;
+    background:rgba(0,0,0,0.7);
+    backdrop-filter:blur(4px);
+}
+
+.modal-content{
+    background:#111;
+    margin:10% auto;
+    padding:28px;
+    border-radius:16px;
+    width:min(420px,90%);
+    border:1px solid rgba(255,255,255,0.05);
+}
+
+.modal-content h3{
+    font-size:1.2rem;
+    margin-bottom:20px;
+}
+
+.modal-content label{
+    display:block;
+    font-size:.85rem;
+    color:#aaa;
+    margin-bottom:6px;
+    font-weight:500;
+}
+
+.modal-content input,
+.modal-content select{
+    width:100%;
+    background:#0a0a0a;
+    border:1px solid #222;
+    border-radius:10px;
+    padding:12px 14px;
+    color:#fff;
+    font-size:.95rem;
+    font-family:"Inter",sans-serif;
+    margin-bottom:16px;
+    transition:border-color .2s;
+}
+
+.modal-content input:focus,
+.modal-content select:focus{
+    outline:none;
+    border-color:#d4af37;
+}
+
+.modal-content button[type="submit"]{
+    background:linear-gradient(135deg,#d4af37,#f4c542);
+    color:#111;
+    padding:12px 24px;
+    margin-top:8px;
+}
+
+.modal-content button[type="submit"]:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 25px rgba(212,175,55,0.25);
+}
+
+.modal-content button[type="button"]{
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    padding:10px 20px;
+    margin-top:8px;
+    margin-right:8px;
+}
+
+.modal-content button[type="button"]:hover{
+    background:rgba(255,255,255,0.15);
+}
+
+.close{
+    float:right;
+    font-size:1.5rem;
+    cursor:pointer;
+    color:#666;
+    transition:color .2s;
+    line-height:1;
+}
+
+.close:hover{ color:#fff; }
+
+/* NOTIFICATION */
+.notification{
+    position:fixed;
+    top:24px;
+    right:24px;
+    padding:14px 20px;
+    border-radius:12px;
+    display:none;
+    font-weight:600;
+    font-size:.9rem;
+    z-index:2000;
+    backdrop-filter:blur(12px);
+}
+
+.notification.success{
+    background:rgba(46,204,113,0.15);
+    color:#2ecc71;
+    border:1px solid rgba(46,204,113,0.3);
+}
+
+.notification.error{
+    background:rgba(231,76,60,0.15);
+    color:#e74c3c;
+    border:1px solid rgba(231,76,60,0.3);
+}
+
+.notification.warning{
+    background:rgba(243,156,18,0.15);
+    color:#f39c12;
+    border:1px solid rgba(243,156,18,0.3);
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:40px;
+    color:#333;
+    font-size:.85rem;
+    border-top:1px solid #111;
+}
+
+footer strong{
+    color:#d4af37;
+}
+
+/* EMPTY STATE */
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:#666;
+}
+
+.empty-state i{
+    font-size:3rem;
+    color:#222;
+    margin-bottom:16px;
+    display:block;
+}
+
+.empty-state p{
+    font-size:1rem;
+    margin-bottom:20px;
+}
+
+.empty-state a{
+    color:#d4af37;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.empty-state a:hover{
+    text-decoration:underline;
 }

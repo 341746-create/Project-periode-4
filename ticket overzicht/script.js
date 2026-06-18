@@ -1,11 +1,9 @@
 // ============================================================
 //  Aurora Theater — Ticket Overzicht script
-//  Communiceert met de PHP API endpoints
 // ============================================================
 
 let currentTicketId = null;
 
-// --- Modal helpers ---
 function openEditModal(id) {
     currentTicketId = id;
     document.getElementById('editTicketId').value = id;
@@ -22,14 +20,12 @@ function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
-// Sluit modal bij klik buiten de modal-content
 window.addEventListener('click', e => {
     if (e.target.classList.contains('modal')) {
         e.target.style.display = 'none';
     }
 });
 
-// --- Ticket bewerken ---
 document.getElementById('editForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -46,18 +42,17 @@ document.getElementById('editForm').addEventListener('submit', async function(e)
         const data = await res.json();
 
         if (data.success) {
-            showNotification('Ticket succesvol bijgewerkt! Pagina wordt herladen...', true);
+            showNotification('Ticket succesvol bijgewerkt! Pagina wordt herladen...', 'success');
             closeModal('editModal');
             setTimeout(() => location.reload(), 1500);
         } else {
-            showNotification(data.error ?? 'Bijwerken mislukt.', false);
+            showNotification(data.error ?? 'Bijwerken mislukt.', 'error');
         }
     } catch {
-        showNotification('Verbindingsfout — probeer opnieuw.', false);
+        showNotification('Verbindingsfout — probeer opnieuw.', 'error');
     }
 });
 
-// --- Ticket annuleren ---
 document.getElementById('confirmCancel').addEventListener('click', async function() {
     const id = parseInt(document.getElementById('cancelTicketId').value);
 
@@ -70,22 +65,21 @@ document.getElementById('confirmCancel').addEventListener('click', async functio
         const data = await res.json();
 
         if (data.success) {
-            showNotification('Ticket geannuleerd. Pagina wordt herladen...', true);
+            showNotification('Ticket geannuleerd. Pagina wordt herladen...', 'success');
             closeModal('cancelModal');
             setTimeout(() => location.reload(), 1500);
         } else {
-            showNotification(data.error ?? 'Annuleren mislukt.', false);
+            showNotification(data.error ?? 'Annuleren mislukt.', 'error');
         }
     } catch {
-        showNotification('Verbindingsfout — probeer opnieuw.', false);
+        showNotification('Verbindingsfout — probeer opnieuw.', 'error');
     }
 });
 
-// --- Notificatie ---
-function showNotification(msg, success) {
+function showNotification(msg, type) {
     const n     = document.getElementById('notification');
-    n.textContent = msg;
-    n.className   = success ? 'notification' : 'notification error';
+    n.innerHTML = msg;
+    n.className   = 'notification ' + type;
     n.style.display = 'block';
     setTimeout(() => { n.style.display = 'none'; }, 4000);
 }

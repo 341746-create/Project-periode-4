@@ -45,7 +45,7 @@
         <div class="scanner-footer">
             <a href="../index.php">&#8592; Terug naar Home</a>
             &bull;
-            <a href="../ticket overzicht/index.php">Ticket Overzicht</a>
+            <a href="../ticket_overzicht/index.php">Ticket Overzicht</a>
         </div>
     </div>
 

@@ -1,0 +1,348 @@
+/* ============================================================
+   Aurora Theater — NieuweTicketToevoegen stijlen
+   ============================================================ */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #07070a;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ---- HEADER ---- */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.header-inner {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px;
+}
+.logo {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.logo i { color: #d4af37; }
+.header nav { display: flex; gap: 20px; }
+.header nav a { color: #aaa; text-decoration: none; font-size: .9rem; transition: color .2s; }
+.header nav a:hover { color: #d4af37; }
+
+/* ---- MAIN ---- */
+.main-content {
+    padding: 110px 16px 60px;
+    display: flex;
+    justify-content: center;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 760px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+.form-header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+.form-header h1 i { color: #d4af37; }
+.form-header p { color: #888; }
+
+/* ---- STEPS ---- */
+.steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 36px;
+}
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #555;
+    font-size: .85rem;
+    font-weight: 600;
+    transition: color .3s;
+}
+.step span {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    border: 2px solid #333;
+    transition: background .3s, border-color .3s;
+}
+.step.active { color: #d4af37; }
+.step.active span { background: #d4af37; color: #111; border-color: #d4af37; }
+.step.done span { background: #2ecc71; border-color: #2ecc71; color: #fff; }
+.step-line {
+    flex: 1;
+    height: 2px;
+    background: #222;
+    max-width: 60px;
+    margin: 0 8px;
+}
+
+/* ---- NOTIFICATION ---- */
+.notification {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: none;
+    font-weight: 500;
+}
+.notification.success { background: #0d3320; color: #2ecc71; border: 1px solid #2ecc71; display: block; }
+.notification.error   { background: #3a0d0d; color: #e74c3c; border: 1px solid #e74c3c; display: block; }
+
+/* ---- FORM STEP ---- */
+.form-step { animation: fadeIn .3s ease; }
+.form-step.hidden { display: none; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.form-step h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+/* ---- SHOWS GRID ---- */
+.voorstellingen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.show-card {
+    background: #111;
+    border: 2px solid #1e1e1e;
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color .2s, transform .2s;
+    position: relative;
+}
+.show-card input[type="radio"] { display: none; }
+.show-card:hover { border-color: #444; transform: translateY(-2px); }
+.show-card.selected, .show-card:has(input:checked) {
+    border-color: #d4af37;
+    background: #1a1608;
+}
+.badge-categorie {
+    font-size: .72rem;
+    background: rgba(212,175,55,0.15);
+    color: #d4af37;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+.show-card h3 { font-size: 1rem; margin-bottom: 6px; }
+.show-card p  { font-size: .82rem; color: #888; display: flex; align-items: center; gap: 6px; }
+.show-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.show-card-footer strong { color: #d4af37; }
+.show-card-footer small  { color: #555; font-size: .78rem; }
+.placeholder-card { text-align: center; color: #555; padding: 40px 16px; }
+.placeholder-card i { font-size: 2.5rem; color: #222; margin-bottom: 12px; }
+
+/* ---- FORM GROUPS ---- */
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-size: .85rem;
+    color: #aaa;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.form-group input[type="text"],
+.form-group input[type="email"] {
+    width: 100%;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: #fff;
+    font-size: .95rem;
+    font-family: 'Inter', sans-serif;
+    transition: border-color .2s;
+}
+.form-group input:focus {
+    outline: none;
+    border-color: #d4af37;
+}
+
+/* ---- COUNTER ---- */
+.counter {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: fit-content;
+    border: 1px solid #222;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.counter-btn {
+    width: 44px;
+    height: 44px;
+    background: #1a1a1a;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background .2s;
+}
+.counter-btn:hover { background: #d4af37; color: #111; }
+.counter input {
+    width: 60px;
+    height: 44px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ---- PRIJS PREVIEW ---- */
+.prijs-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 20px 0;
+    border: 1px solid #1e1e1e;
+}
+.prijs-preview strong { color: #d4af37; font-size: 1.3rem; }
+
+/* ---- BETAAL OPTIES ---- */
+.betaal-opties {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.betaal-optie {
+    background: #111;
+    border: 2px solid #1e1e1e;
+    border-radius: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: border-color .2s;
+}
+.betaal-optie input { display: none; }
+.betaal-optie:has(input:checked) { border-color: #d4af37; background: #1a1608; }
+.betaal-optie span { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.betaal-optie i { color: #d4af37; }
+
+/* ---- SAMENVATTING ---- */
+.reservering-samenvatting {
+    background: #0c0c0f;
+    border: 1px solid #1e1e1e;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 24px;
+}
+.reservering-samenvatting h3 { font-size: 1rem; margin-bottom: 12px; color: #aaa; }
+.samenvatting-rij {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a1a1a;
+    font-size: .9rem;
+}
+.samenvatting-rij:last-child { border: none; font-weight: 700; color: #d4af37; }
+
+/* ---- BUTTONS ---- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    font-size: .95rem;
+    text-decoration: none;
+    transition: all .2s;
+}
+.btn--primary { background: linear-gradient(135deg, #d4af37, #f4c542); color: #111; }
+.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(212,175,55,0.25); }
+.btn--ghost { background: rgba(255,255,255,0.08); color: #fff; }
+.btn--ghost:hover { background: rgba(255,255,255,0.15); }
+.btn--full { width: 100%; justify-content: center; }
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+/* ---- SUCCESS SCREEN ---- */
+.success-screen {
+    text-align: center;
+    padding: 40px 20px;
+}
+.success-icon { font-size: 4rem; margin-bottom: 16px; }
+.success-screen h2 { font-size: 1.8rem; margin-bottom: 12px; }
+.success-screen p  { color: #888; margin-bottom: 24px; }
+.ticket-code-display {
+    background: #111;
+    border: 2px dashed #d4af37;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #d4af37;
+    letter-spacing: 4px;
+    margin-bottom: 28px;
+}
+.success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ---- FOOTER ---- */
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: #333;
+    font-size: .85rem;
+    border-top: 1px solid #111;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=index.php">
+    <title>Ticket Overzicht — Aurora Theater</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #07070a;
+            color: #fff;
+            font-family: "Inter", sans-serif;
+        }
+        .redirect-msg {
+            text-align: center;
+        }
+        .redirect-msg i {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .redirect-msg a {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .redirect-msg a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-msg">
+        <i class="fa-solid fa-masks-theater"></i>
+        <p>Even doorsturen naar <a href="index.php">Ticket Overzicht</a>...</p>
+    </div>
+    <script>
+        window.location.replace('index.php');
+    </script>
+</body>
+</html>
