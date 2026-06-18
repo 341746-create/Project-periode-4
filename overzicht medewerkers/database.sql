@@ -177,3 +177,4 @@ VALUES
 -- Zoeken op naam (gebruikt door de zoekbalk in overzicht.html / index.php):
 -- SELECT * FROM medewerkers
 -- WHERE voornaam LIKE '%zoekterm%' OR achternaam LIKE '%zoekterm%';
+-- Allerlaatste aanpassing voor commit 32
