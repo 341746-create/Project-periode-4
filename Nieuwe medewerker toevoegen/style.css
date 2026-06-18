@@ -1,0 +1,569 @@
+/* =====================================================================
+   Het Repertoire — Personeelsregistratie
+   Theatre-themed "add employee" page
+   ===================================================================== */
+
+:root {
+  /* Color tokens */
+  --velvet-black:   #190d12;
+  --velvet-deep:    #2a1018;
+  --curtain-red:    #5c1622;
+  --curtain-red-2:  #7a1f2b;
+  --curtain-shadow: #100509;
+  --gold:           #c9a14a;
+  --gold-bright:    #e8c777;
+  --gold-dim:       #8a6f33;
+  --paper:          #f4ead6;
+  --paper-dim:      #d9cdb2;
+  --ink:            #2b1d16;
+  --error:          #c4493a;
+  --success:        #5c8a5a;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-script: 'Cormorant Garamond', Georgia, serif;
+
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--velvet-black);
+  font-family: var(--font-body);
+  color: var(--paper);
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 0%, #3a141d 0%, var(--velvet-black) 55%),
+    var(--velvet-black);
+}
+
+/* ---------------------------------------------------------------------
+   Ambient texture: subtle stage floor / house glow
+   --------------------------------------------------------------------- */
+.house-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 50% 18%, rgba(232, 199, 119, 0.10) 0%, transparent 45%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.18) 0px,
+      rgba(0,0,0,0.18) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  mix-blend-mode: normal;
+}
+
+/* ---------------------------------------------------------------------
+   Spotlight: sweeps once on load, then settles centered above the form
+   --------------------------------------------------------------------- */
+.spotlight {
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  width: 1400px;
+  height: 1400px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(244, 234, 214, 0.16) 0%, rgba(244, 234, 214, 0.05) 30%, transparent 60%);
+  z-index: 1;
+  pointer-events: none;
+  animation: spotlight-find 2.4s cubic-bezier(.16,.84,.44,1) both;
+}
+
+@keyframes spotlight-find {
+  0%   { opacity: 0; transform: translateX(-85%) scale(0.7); }
+  35%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+/* ---------------------------------------------------------------------
+   Curtain rig — two swagged drapes pulled to the wings, tasseled ties
+   --------------------------------------------------------------------- */
+.curtain-rig {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.valance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--curtain-red-2);
+  background-image:
+    linear-gradient(180deg, var(--curtain-red-2) 0%, var(--curtain-red) 100%);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 55%,
+    93% 100%, 86% 55%, 79% 100%, 72% 55%, 65% 100%, 58% 55%,
+    51% 100%, 44% 55%, 37% 100%, 30% 55%, 23% 100%, 16% 55%,
+    9% 100%, 2% 55%, 0% 100%
+  );
+}
+
+.curtain {
+  position: absolute;
+  top: 0;
+  width: 22vw;
+  min-width: 180px;
+  max-width: 320px;
+  height: 46vh;
+  max-height: 420px;
+  background: linear-gradient(115deg, var(--curtain-red) 0%, var(--curtain-red-2) 35%, var(--curtain-shadow) 100%);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  opacity: 0.96;
+}
+
+.curtain--left {
+  left: 0;
+  border-radius: 0 0 60% 0 / 0 0 30% 0;
+  transform-origin: top left;
+  animation: curtain-open-left 1.6s cubic-bezier(.6,0,.4,1) both;
+}
+
+.curtain--right {
+  right: 0;
+  border-radius: 0 0 0 60% / 0 0 0 30%;
+  transform-origin: top right;
+  animation: curtain-open-right 1.6s cubic-bezier(.6,0,.4,1) both;
+}
+
+@keyframes curtain-open-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-2%); }
+}
+@keyframes curtain-open-right {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(2%); }
+}
+
+.curtain__fold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.28) 100%);
+  border-radius: 0 0 50% 50% / 0 0 25% 25%;
+}
+.curtain__fold:nth-child(1) { left: 2%;  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.3)); }
+.curtain__fold:nth-child(2) { left: 22%; }
+.curtain__fold:nth-child(3) { left: 42%; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.35)); }
+.curtain__fold:nth-child(4) { left: 62%; }
+.curtain__fold:nth-child(5) { left: 80%; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.3)); }
+
+/* ---------------------------------------------------------------------
+   Stage: main content column
+   --------------------------------------------------------------------- */
+.stage {
+  position: relative;
+  z-index: 3;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 110px 24px 90px;
+}
+
+.masthead {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.masthead__eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 14px;
+}
+
+.masthead__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  line-height: 1.15;
+  margin: 0 0 16px;
+  color: var(--paper);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.5);
+}
+
+.masthead__title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold-bright);
+}
+
+.masthead__sub {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--paper-dim);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------------
+   Playbill card — the form, styled like a cast credit sheet
+   --------------------------------------------------------------------- */
+.playbill {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 56px 48px 44px;
+  box-shadow:
+    0 30px 70px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(0,0,0,0.06);
+  animation: playbill-rise 0.9s cubic-bezier(.16,.84,.44,1) 0.4s both;
+}
+
+@keyframes playbill-rise {
+  0%   { opacity: 0; transform: translateY(28px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.playbill::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.playbill__ribbon {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--curtain-red-2);
+  color: var(--gold-bright);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 8px 22px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------
+   Form structure
+   --------------------------------------------------------------------- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 18px;
+}
+
+.form__group {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+.form__group legend {
+  grid-column: 1 / -1;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--curtain-red-2);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--paper-dim);
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field--half { grid-column: span 1; }
+.field:not(.field--half) { grid-column: 1 / -1; }
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+.req { color: var(--curtain-red-2); }
+
+.field input,
+.field select {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: #fffdf8;
+  border: 1.5px solid var(--paper-dim);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.field input::placeholder { color: #a89a82; }
+
+.field input:hover,
+.field select:hover {
+  border-color: var(--gold-dim);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--curtain-red-2);
+  box-shadow: 0 0 0 3px rgba(124, 31, 43, 0.15);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--curtain-red-2);
+  outline-offset: 2px;
+}
+
+.field.has-error input,
+.field.has-error select {
+  border-color: var(--error);
+}
+
+.field__error {
+  font-size: 0.78rem;
+  color: var(--error);
+  min-height: 1em;
+}
+
+/* ---------------------------------------------------------------------
+   Actions
+   --------------------------------------------------------------------- */
+.form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  align-items: center;
+  border-top: 1px solid var(--paper-dim);
+  padding-top: 26px;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: var(--radius);
+  padding: 13px 26px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--paper-dim);
+}
+.btn--ghost:hover { border-color: var(--curtain-red-2); color: var(--curtain-red-2); }
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--curtain-red-2), var(--curtain-red));
+  color: var(--gold-bright);
+  box-shadow: 0 10px 24px rgba(92, 22, 34, 0.35);
+}
+.btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(92, 22, 34, 0.45);
+}
+.btn--primary:active { transform: translateY(0); }
+
+.form__status {
+  text-align: center;
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin: 0;
+}
+.form__status.is-error { color: var(--error); }
+.form__status.is-success { color: var(--success); }
+
+/* ---------------------------------------------------------------------
+   Roster — "current cast" table beneath the playbill
+   --------------------------------------------------------------------- */
+.roster {
+  margin-top: 56px;
+  background: rgba(244, 234, 214, 0.04);
+  border: 1px solid rgba(201, 161, 74, 0.25);
+  border-radius: var(--radius);
+  padding: 28px 32px 8px;
+  animation: playbill-rise 0.9s cubic-bezier(.16,.84,.44,1) 0.6s both;
+}
+
+.roster__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.roster__header h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--paper);
+  margin: 0;
+}
+
+.roster__count {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.roster__table-wrap {
+  overflow-x: auto;
+}
+
+.roster__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.roster__table th {
+  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0 12px 12px;
+  border-bottom: 1px solid rgba(201, 161, 74, 0.3);
+}
+
+.roster__table td {
+  padding: 13px 12px;
+  color: var(--paper-dim);
+  border-bottom: 1px solid rgba(244, 234, 214, 0.08);
+}
+
+.roster__table tr:last-child td { border-bottom: none; }
+
+.roster__table tbody tr {
+  animation: row-in 0.5s ease both;
+}
+
+@keyframes row-in {
+  0% { opacity: 0; transform: translateX(-6px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.roster__table td.cell-name {
+  color: var(--paper);
+  font-weight: 600;
+}
+
+.roster__empty {
+  text-align: center;
+  font-family: var(--font-script);
+  font-style: italic;
+  color: var(--paper-dim);
+  padding: 22px 0;
+  margin: 0;
+}
+
+.roster.has-rows .roster__empty { display: none; }
+.roster:not(.has-rows) .roster__table-wrap { display: none; }
+
+/* ---------------------------------------------------------------------
+   Curtain call toast — confirmation when a cast member is added
+   --------------------------------------------------------------------- */
+.curtain-call {
+  position: fixed;
+  top: 28px;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  z-index: 50;
+  background: var(--velvet-deep);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  padding: 18px 32px;
+  text-align: center;
+  transition: transform 0.5s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+}
+
+.curtain-call.is-visible {
+  transform: translate(-50%, 0%);
+}
+
+.curtain-call__eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 4px;
+}
+
+.curtain-call__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--paper);
+  margin: 0;
+}
+
+.curtain-call__role {
+  font-family: var(--font-script);
+  font-style: italic;
+  color: var(--paper-dim);
+  margin: 2px 0 0;
+}
+
+/* ---------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .stage { padding: 90px 16px 70px; }
+  .playbill { padding: 44px 24px 32px; }
+  .form__group { grid-template-columns: 1fr; }
+  .field--half { grid-column: 1 / -1; }
+  .curtain { width: 16vw; height: 30vh; }
+  .form__actions { flex-direction: column-reverse; align-items: stretch; }
+  .btn { width: 100%; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .masthead__title { font-size: 1.8rem; }
+}
