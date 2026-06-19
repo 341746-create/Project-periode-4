@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aurora Theater - Tickets</title>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<header class="header">
+<nav class="nav container">
+
+<div class="logo">
+<i class="fa-solid fa-masks-theater"></i>
+Aurora Theater
+</div>
+
+<ul class="nav-links">
+<li><a href="#">Home</a></li>
+<li><a href="#">Shows</a></li>
+<li><a href="#">Tickets</a></li>
+</ul>
+
+<div class="nav-actions">
+<button class="btn btn--ghost">Login</button>
+<button class="btn btn--primary">Reserveren</button>
+</div>
+
+</nav>
+</header>
+
+<main class="page">
+
+<div class="card">
+
+<div class="card-header">
+<span class="badge">Aurora Experience</span>
+<h1>🎭 Ticket Reserveren</h1>
+<p>Reserveer je plek snel en eenvoudig</p>
+</div>
+
+<form id="ticketForm">
+
+<div class="form-group">
+<label>Naam</label>
+<input type="text" id="naam" placeholder="Jouw naam">
+</div>
+
+<div class="form-group">
+<label>E-mail</label>
+<input type="email" id="email" placeholder="jouw@email.com">
+</div>
+
+<div class="form-group">
+<label>Voorstelling</label>
+<select id="voorstelling">
+<option value="">Kies voorstelling</option>
+<option>Modern Drama</option>
+<option>Musical Night</option>
+<option>Shakespeare</option>
+</select>
+</div>
+
+<div class="form-group calendar-wrap">
+<label>Datum</label>
+<input type="text" id="datumInput" placeholder="Selecteer datum" readonly>
+<div class="calendar" id="calendar"></div>
+</div>
+
+<div class="form-group">
+<label>Aantal tickets</label>
+<input type="number" id="tickets" value="1" min="1" max="10">
+</div>
+
+<button class="btn btn--primary full" type="submit">
+Reserveer Tickets
+</button>
+
+</form>
+
+<div id="melding"></div>
+
+</div>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
