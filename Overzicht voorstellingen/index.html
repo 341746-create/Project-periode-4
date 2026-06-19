@@ -26,11 +26,75 @@
                     </tr>
                 </thead>
                 <tbody id="voorstellingen-lijst">
-                    </tbody>
+                    <tr>
+                        <td class="v-titel">The Phantom of the Opera</td>
+                        <td class="v-datum">24-06-2026</td>
+                        <td class="v-tijd">20:00</td>
+                        <td class="v-zaal">Grote Zaal</td>
+                        <td class="text-right">
+                            <button class="btn-edit" onclick="bewerkRij(this)">Bewerken</button>
+                            <button class="btn-delete">Verwijderen</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="v-titel">Soldaat van Oranje</td>
+                        <td class="v-datum">28-06-2026</td>
+                        <td class="v-tijd">19:30</td>
+                        <td class="v-zaal">Theaterzaal 2</td>
+                        <td class="text-right">
+                            <button class="btn-edit" onclick="bewerkRij(this)">Bewerken</button>
+                            <button class="btn-delete">Verwijderen</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="v-titel">Het Zwanenmeer (Ballet)</td>
+                        <td class="v-datum">02-07-2026</td>
+                        <td class="v-tijd">14:15</td>
+                        <td class="v-zaal">Blauwe Zaal</td>
+                        <td class="text-right">
+                            <button class="btn-edit" onclick="bewerkRij(this)">Bewerken</button>
+                            <button class="btn-delete">Verwijderen</button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
 
-    <script src="voorstellingen.js"></script>
-</body>
+    <script>
+        // Deze functie wordt uitgevoerd zodra er op een 'Bewerken' knop wordt geklikt
+        function bewerkRij(knop) {
+            // Zoek de complete tabelrij (<tr>) op waarin de geklikte knop zich bevindt
+            const rij = knop.closest('tr');
+            
+            // Selecteer de specifieke cellen binnen deze rij op basis van hun class-naam
+            const titelCel = rij.querySelector('.v-titel');
+            const datumCel = rij.querySelector('.v-datum');
+            const tijdCel = rij.querySelector('.v-tijd');
+            const zaalCel = rij.querySelector('.v-zaal');
+
+            // Vraag de gebruiker om nieuwe input via een pop-up (prompt). 
+            // De huidige tekst staat al ingevuld als standaardwaarde.
+            const nieuweTitel = prompt("Pas de naam van de voorstelling aan:", titelCel.innerText);
+            // Als de gebruiker op 'Annuleren' drukt, is de waarde null en stoppen we direct
+            if (nieuweTitel === null) return; 
+
+            const nieuweDatum = prompt("Pas de datum aan:", datumCel.innerText);
+            if (nieuweDatum === null) return;
+
+            const nieuweTijd = prompt("Pas de tijd aan:", tijdCel.innerText);
+            if (nieuweTijd === null) return;
+
+            const nieuweZaal = prompt("Pas de zaal aan:", zaalCel.innerText);
+            if (nieuweZaal === null) return;
+
+            // Update de tekst in de tabelcellen met de nieuw ingevoerde gegevens
+            titelCel.innerText = nieuweTitel;
+            datumCel.innerText = nieuweDatum;
+            tijdCel.innerText = nieuweTijd;
+            zaalCel.innerText = nieuweZaal;
+        }
+    </script>
+
+    </body>
 </html>
