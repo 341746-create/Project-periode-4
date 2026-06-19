@@ -1,0 +1,111 @@
+/* Base Reset & Setup */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* WebP background configuration matching your file name */
+    background: url('defocused-background-luxurious-private-cinema-600nw-2599415605.webp') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Dark, transparent glassmorphic card matching image_41993a.jpg */
+.logout-card {
+    background: rgba(26, 12, 10, 0.88); /* Deep dark brown/red tint */
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 45px 35px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px); /* Premium blurry overlay effect */
+}
+
+/* Typography matching the login screen aesthetic */
+.logout-card h2 {
+    color: #ffffff;
+    font-family: 'Georgia', serif; /* Serif accent for theater feel */
+    font-size: 1.9rem;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.logout-card .subtitle {
+    color: #b3b3b3;
+    font-size: 0.95rem;
+    margin-bottom: 35px;
+    line-height: 1.4;
+}
+
+/* Red thematic logout icon */
+.icon-container {
+    margin-bottom: 25px;
+}
+
+.logout-icon {
+    font-size: 2.8rem;
+    color: #cc0000; /* Vibrant theater red */
+    background: rgba(204, 0, 0, 0.1);
+    padding: 22px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Layout for actions */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+    width: 100%;
+}
+
+/* Vivid Red action button matching your Sign In layout */
+.btn-logout {
+    width: 100%;
+    background-color: #cc0000; 
+    color: #ffffff;
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.btn-logout:hover {
+    background-color: #b30000;
+}
+
+.btn-logout:active {
+    transform: scale(0.98);
+}
+
+/* Subtle cancel option styled like the secondary text links */
+.btn-cancel {
+    color: #cc0000;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s, text-decoration 0.2s;
+}
+
+.btn-cancel:hover {
+    color: #ff3333;
+    text-decoration: underline;
+}
