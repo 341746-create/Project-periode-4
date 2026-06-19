@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Overzicht - Theater</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Theater Ticket Overzicht</h1>
+        <nav>
+            <a href="index.html">Overzicht</a>
+            <a href="../Ticket-reservatie/index.html">Reservatie</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="tickets-container">
+            <h2>Uw Tickets</h2>
+            <table id="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Voorstelling</th>
+                        <th>Datum</th>
+                        <th>Rij</th>
+                        <th>Stoel</th>
+                        <th>Status</th>
+                        <th>Acties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Tickets worden via JS toegevoegd -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Modal voor bewerken -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editModal')">&times;</span>
+            <h3>Ticket Bewerken</h3>
+            <form id="editForm">
+                <label for="editRij">Rij:</label>
+                <input type="text" id="editRij" required>
+                <label for="editStoel">Stoel:</label>
+                <input type="text" id="editStoel" required>
+                <button type="submit">Opslaan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal voor annuleren -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cancelModal')">&times;</span>
+            <h3>Annuleer Ticket</h3>
+            <p>Weet je zeker dat je dit ticket wilt annuleren?</p>
+            <button id="confirmCancel">Ja, annuleer</button>
+            <button onclick="closeModal('cancelModal')">Nee</button>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <footer>
+        &copy; 2026 Theater Systeem
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
