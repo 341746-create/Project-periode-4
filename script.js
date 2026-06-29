@@ -1,14 +1,12 @@
 // ============================================================
-//  Aurora Theater — BestaandeTicketWijzigen frontend script
+//  Aurora Theater — BestaandeTicketAnnuleren frontend script
 // ============================================================
 
-// --- Header scroll effect ---
 const header = document.getElementById("siteHeader");
 window.addEventListener("scroll", () => {
     header.classList.toggle("scrolled", window.scrollY > 50);
 });
 
-// --- Smooth scrolling for anchor links ---
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", function (e) {
         e.preventDefault();
@@ -19,81 +17,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// --- Dropdown menu ---
-document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-    toggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        const dropdown = this.closest('.dropdown');
-        if (!dropdown) return;
-
-        const menu = dropdown.querySelector('.dropdown-menu');
-        if (!menu) return;
-
-        // Sluit andere dropdowns
-        document.querySelectorAll('.dropdown-menu.open').forEach(openMenu => {
-            if (openMenu !== menu) openMenu.classList.remove('open');
-        });
-        document.querySelectorAll('.dropdown.open').forEach(d => {
-            if (d !== dropdown) d.classList.remove('open');
-        });
-
-        menu.classList.toggle('open');
-        dropdown.classList.toggle('open');
-    });
-});
-
-// Sluit dropdown bij klik buiten
-document.addEventListener("click", function(e) {
-    document.querySelectorAll(".dropdown-menu.open").forEach(menu => {
-        const dropdown = menu.closest(".dropdown");
-        if (!dropdown || !dropdown.contains(e.target)) {
-            menu.classList.remove("open");
-            dropdown?.classList.remove("open");
-        }
-    });
-});
-
-// --- API endpoints ---
-const API_UPDATE = 'api/update_ticket.php';
 const API_CANCEL = 'api/cancel_ticket.php';
 
-let huidigeEditMax = 10;
-
-// --- Modal helpers ---
 function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-// --- Edit modal ---
-function openEditModal(id, stoelen, prijsPerStoel, maxStoelen, betaalmethode) {
-    document.getElementById('editId').value = id;
-    document.getElementById('editPrijsPerStoel').value = prijsPerStoel;
-    document.getElementById('editStoelen').value = stoelen;
-    document.getElementById('editStoelen').max = Math.min(maxStoelen, 10);
-    huidigeEditMax = Math.min(maxStoelen, 10);
-
-    const methode = betaalmethode || 'ideal';
-    const radio = document.querySelector(`#editForm input[name="betaalmethode"][value="${methode}"]`);
-    if (radio) radio.checked = true;
-
-    editUpdatePrijs(0);
-    openModal('editModal');
-}
-
-function closeEditModal() {
-    closeModal('editModal');
-}
-
-function editUpdatePrijs(delta) {
-    const inp = document.getElementById('editStoelen');
-    const prijs = parseFloat(document.getElementById('editPrijsPerStoel').value) || 0;
-    let nieuw = parseInt(inp.value) + delta;
-    nieuw = Math.max(1, Math.min(nieuw, huidigeEditMax));
-    inp.value = nieuw;
-    const totaal = (prijs * nieuw).toFixed(2).replace('.', ',');
-    document.getElementById('editNieuwTotaal').textContent = `€${totaal}`;
-}
-
-// --- Cancel modal ---
 function openCancelModal(id) {
     document.getElementById('cancelId').value = id;
     openModal('cancelModal');
@@ -103,7 +31,6 @@ function closeCancelModal() {
     closeModal('cancelModal');
 }
 
-// --- Notification ---
 function showNotification(msg, type) {
     const n = document.getElementById('notification');
     const iconMap = {
@@ -120,7 +47,6 @@ function showNotification(msg, type) {
     }, 4000);
 }
 
-// --- Add entry to the changelog table (client-side) ---
 function addChangelogEntry(ticketCode, voorstelling, type, detail) {
     const table = document.getElementById('changelogTable');
     if (!table) return;
@@ -133,12 +59,12 @@ function addChangelogEntry(ticketCode, voorstelling, type, detail) {
     }).replace(',', '');
 
     const typeClassMap = {
-        'bewerkt': 'change-type--edit',
         'geannuleerd': 'change-type--cancel',
+        'aangemaakt': 'change-type--create',
     };
     const typeIconMap = {
-        'bewerkt': 'fa-pen',
         'geannuleerd': 'fa-xmark',
+        'aangemaakt': 'fa-plus',
     };
 
     const row = document.createElement('tr');
@@ -148,8 +74,8 @@ function addChangelogEntry(ticketCode, voorstelling, type, detail) {
         <td><span class="change-ticket-code">${ticketCode}</span></td>
         <td>${voorstelling}</td>
         <td>
-            <span class="change-type ${typeClassMap[type] || 'change-type--edit'}">
-                <i class="fa-solid ${typeIconMap[type] || 'fa-pen'}"></i>
+            <span class="change-type ${typeClassMap[type] || 'change-type--cancel'}">
+                <i class="fa-solid ${typeIconMap[type] || 'fa-xmark'}"></i>
                 ${type.charAt(0).toUpperCase() + type.slice(1)}
             </span>
         </td>
@@ -158,7 +84,6 @@ function addChangelogEntry(ticketCode, voorstelling, type, detail) {
 
     tbody.insertBefore(row, tbody.firstChild);
 
-    // Update badge count
     const badge = document.querySelector('.changelog-badge');
     if (badge) {
         const count = tbody.querySelectorAll('tr').length;
@@ -166,65 +91,6 @@ function addChangelogEntry(ticketCode, voorstelling, type, detail) {
     }
 }
 
-// --- Edit form submit ---
-document.getElementById('editForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const id = parseInt(document.getElementById('editId').value);
-    const nieuweStoelen = parseInt(document.getElementById('editStoelen').value);
-    const methode = document.querySelector('#editForm input[name="betaalmethode"]:checked')?.value ?? 'ideal';
-
-    // Get current values for changelog
-    const card = document.querySelector(`.ticket-card[data-id="${id}"]`);
-    const ticketCode = card?.querySelector('.ticket-code')?.textContent || `AUR-${id}`;
-    const voorstelling = card?.querySelector('h3')?.textContent || '';
-    const oudeStoelen = card?.querySelector(`#seats-display-${id}`)?.textContent || '';
-    const oudeKosten = card?.querySelector(`#price-display-${id}`)?.textContent || '';
-
-    const payload = {
-        id: id,
-        aantal_stoelen: nieuweStoelen,
-        betaalmethode: methode,
-    };
-
-    try {
-        const res = await fetch(API_UPDATE, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        });
-        const data = await res.json();
-
-        if (data.success) {
-            const prijs = parseFloat(data.totaalprijs).toFixed(2).replace('.', ',');
-            document.getElementById('price-display-' + id).innerHTML = `&euro;${prijs}`;
-            document.getElementById('seats-display-' + id).textContent = `${data.aantal_stoelen} stoel(en)`;
-
-            // Add to changelog
-            addChangelogEntry(ticketCode, voorstelling, 'bewerkt',
-                `Stoelen: ${oudeStoelen} → ${data.aantal_stoelen} stoel(en) | Totaal: ${oudeKosten} → €${prijs}`);
-
-            showNotification('Reservering succesvol bijgewerkt!', 'success');
-            closeEditModal();
-        } else {
-            showNotification(data.error ?? 'Kon reservering niet bijwerken.', 'error');
-        }
-    } catch (err) {
-        // Demo mode — simulate success
-        const prijsPerStoel = parseFloat(document.getElementById('editPrijsPerStoel').value) || 0;
-        const nieuwePrijs = (prijsPerStoel * nieuweStoelen).toFixed(2).replace('.', ',');
-
-        document.getElementById('price-display-' + id).innerHTML = `&euro;${nieuwePrijs}`;
-        document.getElementById('seats-display-' + id).textContent = `${nieuweStoelen} stoel(en)`;
-
-        addChangelogEntry(ticketCode, voorstelling, 'bewerkt',
-            `Stoelen: ${oudeStoelen} → ${nieuweStoelen} stoel(en) | Totaal: ${oudeKosten} → €${nieuwePrijs}`);
-
-        showNotification('Reservering bijgewerkt (demo-modus).', 'success');
-        closeEditModal();
-    }
-});
-
-// --- Cancel form submit ---
 document.getElementById('cancelForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const id = parseInt(document.getElementById('cancelId').value);
@@ -250,7 +116,6 @@ document.getElementById('cancelForm').addEventListener('submit', async function(
             showNotification(data.error ?? 'Kon reservering niet annuleren.', 'error');
         }
     } catch (err) {
-        // Demo mode — simulate cancel
         if (card) {
             const statusEl = card.querySelector('.status');
             if (statusEl) {
@@ -259,7 +124,7 @@ document.getElementById('cancelForm').addEventListener('submit', async function(
             }
             const actions = card.querySelector('.ticket-actions');
             if (actions) {
-                actions.innerHTML = '<span class="ticket-badge-cancelled"><i class="fa-solid fa-ban"></i> Niet bewerkbaar</span>';
+                actions.innerHTML = '<span class="ticket-badge-cancelled"><i class="fa-solid fa-ban"></i> Al geannuleerd</span>';
             }
         }
 
@@ -269,7 +134,6 @@ document.getElementById('cancelForm').addEventListener('submit', async function(
     }
 });
 
-// --- Close modals on overlay click ---
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', function(e) {
         if (e.target === overlay) {
@@ -278,7 +142,6 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
     });
 });
 
-// --- Close modals on Escape key ---
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(overlay => {
@@ -287,7 +150,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// --- Intersection observer for fade-in animations ---
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {

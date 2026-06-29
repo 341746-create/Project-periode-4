@@ -1,8 +1,4 @@
 <?php
-// ============================================================
-//  API: POST /BestaandeTicketWijzigen/api/cancel_ticket.php
-//  Annuleert een reservering en bevrijdt stoelen
-// ============================================================
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
@@ -28,7 +24,6 @@ try {
     $pdo = db();
     $pdo->beginTransaction();
 
-    // Controleer of reservering bestaat en annuleerbaar is
     $stmt = $pdo->prepare("SELECT * FROM reserveringen WHERE id = :id AND status NOT IN ('geannuleerd','voltooid')");
     $stmt->execute([':id' => $reservering_id]);
     $reservering = $stmt->fetch();
@@ -40,7 +35,6 @@ try {
         exit;
     }
 
-    // Stel reservering in op geannuleerd
     $upd = $pdo->prepare("
         UPDATE reserveringen
         SET status = 'geannuleerd', bijgewerkt_op = NOW()
@@ -48,7 +42,6 @@ try {
     ");
     $upd->execute([':id' => $reservering_id]);
 
-    // Herstel beschikbare stoelen bij de voorstelling
     $herstel = $pdo->prepare("
         UPDATE voorstellingen
         SET beschikbare_stoelen = beschikbare_stoelen + :n
@@ -59,7 +52,6 @@ try {
         ':vid' => (int)$reservering['voorstelling_id'],
     ]);
 
-    // Stel gekoppelde stoelen terug op 'vrij'
     $vrij = $pdo->prepare("
         UPDATE stoelen s
         JOIN reservering_stoelen rs ON rs.stoel_id = s.id

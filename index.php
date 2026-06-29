@@ -1,7 +1,6 @@
 <?php
 // ============================================================
-//  Aurora Theater — Bestaande Ticket Wijzigen
-//  Inclusief wijzigingsoverzicht
+//  Aurora Theater — Bestaande Ticket Annuleren
 // ============================================================
 
 $gebruiker_id = 2;
@@ -9,7 +8,6 @@ $dbError = null;
 $tickets = [];
 $changelog = [];
 
-// --- Demo data (wanneer database niet beschikbaar is) ---
 $demoTickets = [
     ['id' => 1, 'voorstelling' => 'The Phantom of the Opera', 'datum' => '2026-07-10', 'aanvangstijd' => '20:00', 'zaal' => 'Grote Zaal', 'aantal_stoelen' => 2, 'totaalprijs' => '49.00', 'status' => 'bevestigd', 'betaalmethode' => 'ideal', 'aangemaakt_op' => '2026-06-01 10:00:00', 'beschikbare_stoelen' => 480, 'prijs_per_stoel' => '24.50'],
     ['id' => 2, 'voorstelling' => 'Soldaat van Oranje', 'datum' => '2026-07-15', 'aanvangstijd' => '19:30', 'zaal' => 'Theaterzaal 2', 'aantal_stoelen' => 3, 'totaalprijs' => '117.00', 'status' => 'in_behandeling', 'betaalmethode' => 'pin', 'aangemaakt_op' => '2026-06-05 14:30:00', 'beschikbare_stoelen' => 250, 'prijs_per_stoel' => '39.00'],
@@ -17,10 +15,8 @@ $demoTickets = [
 ];
 
 $demoChangelog = [
-    ['datum' => '2026-06-28 16:45:00', 'ticket_code' => 'AUR-1-2', 'voorstelling' => 'The Phantom of the Opera', 'type' => 'bewerkt', 'detail' => 'Stoelen: 1 → 2 | Totaal: €24,50 → €49,00'],
-    ['datum' => '2026-06-27 11:20:00', 'ticket_code' => 'AUR-2-2', 'voorstelling' => 'Soldaat van Oranje', 'type' => 'bewerkt', 'detail' => 'Betaalmethode: iDEAL → Pin'],
     ['datum' => '2026-06-25 09:10:00', 'ticket_code' => 'AUR-3-2', 'voorstelling' => 'Het Zwanenmeer (Ballet)', 'type' => 'geannuleerd', 'detail' => 'Reservering geannuleerd door gebruiker'],
-    ['datum' => '2026-06-20 10:00:00', 'ticket_code' => 'AUR-1-2', 'voorstelling' => 'The Phantom of the Opera', 'type' => 'aangemaakt', 'detail' => '1 stoel gereserveerd | €24,50'],
+    ['datum' => '2026-06-20 10:00:00', 'ticket_code' => 'AUR-1-2', 'voorstelling' => 'The Phantom of the Opera', 'type' => 'aangemaakt', 'detail' => '2 stoelen gereserveerd | €49,00'],
     ['datum' => '2026-06-18 14:30:00', 'ticket_code' => 'AUR-2-2', 'voorstelling' => 'Soldaat van Oranje', 'type' => 'aangemaakt', 'detail' => '3 stoelen gereserveerd | €117,00'],
 ];
 
@@ -51,7 +47,6 @@ try {
     $stmt->execute([':uid' => $gebruiker_id]);
     $tickets = $stmt->fetchAll();
 
-    // Changelog ophalen (indien tabel bestaat)
     try {
         $logStmt = $pdo->prepare("
             SELECT
@@ -99,15 +94,13 @@ function statusClass(string $status): string {
 }
 function changeTypeClass(string $type): string {
     return match($type) {
-        'bewerkt'     => 'change-type--edit',
         'geannuleerd' => 'change-type--cancel',
         'aangemaakt'  => 'change-type--create',
-        default       => 'change-type--edit',
+        default       => 'change-type--cancel',
     };
 }
 function changeTypeIcon(string $type): string {
     return match($type) {
-        'bewerkt'     => 'fa-pen',
         'geannuleerd' => 'fa-xmark',
         'aangemaakt'  => 'fa-plus',
         default       => 'fa-circle-info',
@@ -119,15 +112,14 @@ function changeTypeIcon(string $type): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Wijzig uw bestaande Aurora Theater reserveringen en bekijk het overzicht van wijzigingen.">
-    <title>Bestaande Ticket Wijzigen — Aurora Theater</title>
+    <meta name="description" content="Annuleer uw bestaande Aurora Theater reserveringen eenvoudig online.">
+    <title>Bestaande Ticket Annuleren — Aurora Theater</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header" id="siteHeader">
     <nav class="nav container">
         <div class="logo">
@@ -137,7 +129,7 @@ function changeTypeIcon(string $type): string {
 
         <ul class="nav-links">
             <li><a href="#tickets"><i class="fa-solid fa-ticket"></i> Tickets</a></li>
-            <li><a href="#overzicht"><i class="fa-solid fa-clock-rotate-left"></i> Wijzigingen</a></li>
+            <li><a href="#overzicht"><i class="fa-solid fa-clock-rotate-left"></i> Annuleringen</a></li>
         </ul>
 
         <div class="nav-actions">
@@ -148,18 +140,14 @@ function changeTypeIcon(string $type): string {
     </nav>
 </header>
 
-<!-- HERO -->
 <section class="hero-section container">
-    <div class="hero-badge"><i class="fa-solid fa-pen-to-square"></i> Ticketbeheer</div>
-    <h1>Bestaande Ticket <span>Wijzigen</span></h1>
-    <p>Pas uw reserveringen aan, wijzig het aantal stoelen of de betaalmethode, en bekijk uw wijzigingsgeschiedenis.</p>
+    <div class="hero-badge"><i class="fa-solid fa-ban"></i> Ticket Annuleren</div>
+    <h1>Bestaande Ticket <span>Annuleren</span></h1>
+    <p>Selecteer een reservering om te annuleren. U kunt de annulering eenvoudig terugzien in het overzicht.</p>
 </section>
 
-<!-- MAIN -->
 <main>
     <section id="tickets" class="section container">
-
-        <!-- Section header -->
         <div class="section-header">
             <h2 class="section-title">
                 <i class="fa-solid fa-ticket"></i>
@@ -168,7 +156,6 @@ function changeTypeIcon(string $type): string {
             <span class="ticket-count"><?= count($tickets) ?> ticket(s)</span>
         </div>
 
-        <!-- DB Error notification -->
         <?php if ($dbError): ?>
         <div class="inline-notification error">
             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -176,20 +163,18 @@ function changeTypeIcon(string $type): string {
         </div>
         <?php endif; ?>
 
-        <!-- Ticket cards grid -->
         <?php if (empty($tickets)): ?>
         <div class="empty-state fade-in">
             <i class="fa-solid fa-ticket"></i>
             <p>U heeft nog geen tickets gereserveerd.</p>
-            <p>Er zijn momenteel geen tickets beschikbaar om te wijzigen.</p>
+            <p>Er zijn momenteel geen tickets beschikbaar om te annuleren.</p>
         </div>
         <?php else: ?>
         <div class="grid">
             <?php foreach ($tickets as $i => $ticket): ?>
             <?php
                 $ticket_code = sprintf('AUR-%d-%d', (int)$ticket['id'], $gebruiker_id);
-                $maxStoelen  = (int)$ticket['beschikbare_stoelen'] + (int)$ticket['aantal_stoelen'];
-                $kanBewerken = in_array($ticket['status'], ['bevestigd', 'in_behandeling']);
+                $kanAnnuleren = in_array($ticket['status'], ['bevestigd', 'in_behandeling']);
             ?>
             <article class="ticket-card fade-in fade-in-delay-<?= min($i + 1, 4) ?>" data-id="<?= (int)$ticket['id'] ?>">
                 <div class="ticket-header">
@@ -207,18 +192,15 @@ function changeTypeIcon(string $type): string {
                     <strong id="price-display-<?= (int)$ticket['id'] ?>" style="color:#d4af37;">&euro;<?= number_format((float)$ticket['totaalprijs'], 2, ',', '.') ?></strong>
                 </div>
 
-                <?php if ($kanBewerken): ?>
+                <?php if ($kanAnnuleren): ?>
                 <div class="ticket-actions">
-                    <button class="btn btn--primary btn--sm" onclick="openEditModal(<?= (int)$ticket['id'] ?>, <?= (int)$ticket['aantal_stoelen'] ?>, <?= (int)$ticket['prijs_per_stoel'] ?>, <?= $maxStoelen ?>, '<?= htmlspecialchars($ticket['betaalmethode'] ?? 'ideal') ?>')">
-                        <i class="fa-solid fa-pen"></i> Bewerken
-                    </button>
                     <button class="btn btn--danger btn--sm" onclick="openCancelModal(<?= (int)$ticket['id'] ?>)">
                         <i class="fa-solid fa-xmark"></i> Annuleren
                     </button>
                 </div>
                 <?php else: ?>
                 <div class="ticket-actions">
-                    <span class="ticket-badge-cancelled"><i class="fa-solid fa-ban"></i> Niet bewerkbaar</span>
+                    <span class="ticket-badge-cancelled"><i class="fa-solid fa-ban"></i> Al geannuleerd</span>
                 </div>
                 <?php endif; ?>
             </article>
@@ -226,14 +208,11 @@ function changeTypeIcon(string $type): string {
         </div>
         <?php endif; ?>
 
-        <!-- ============================================================ -->
-        <!--  WIJZIGINGEN OVERZICHT (Ticket Overzicht)                    -->
-        <!-- ============================================================ -->
         <div id="overzicht" class="changelog-section">
             <div class="changelog-header">
                 <h2 class="changelog-title">
                     <i class="fa-solid fa-clock-rotate-left"></i>
-                    Wijzigingsoverzicht
+                    Annuleringsoverzicht
                 </h2>
                 <?php if (!empty($changelog)): ?>
                 <span class="changelog-badge"><?= count($changelog) ?> wijziging(en)</span>
@@ -243,7 +222,7 @@ function changeTypeIcon(string $type): string {
             <?php if (empty($changelog)): ?>
             <div class="changelog-empty">
                 <i class="fa-solid fa-clock-rotate-left"></i>
-                <p>Er zijn nog geen wijzigingen vastgelegd.</p>
+                <p>Er zijn nog geen annuleringen vastgelegd.</p>
             </div>
             <?php else: ?>
             <div class="changelog-table-wrap fade-in">
@@ -279,68 +258,9 @@ function changeTypeIcon(string $type): string {
             </div>
             <?php endif; ?>
         </div>
-
     </section>
 </main>
 
-<!-- BEWERK MODAL -->
-<div class="modal-overlay hidden" id="editModal">
-    <div class="modal">
-        <div class="modal-header">
-            <h3><i class="fa-solid fa-pen"></i> Reservering Bewerken</h3>
-            <button class="modal-close" onclick="closeEditModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="editForm">
-                <input type="hidden" id="editId">
-                <input type="hidden" id="editPrijsPerStoel">
-
-                <div class="form-group">
-                    <label for="editStoelen">Aantal stoelen</label>
-                    <div class="counter">
-                        <button type="button" class="counter-btn" id="editMinBtn" onclick="editUpdatePrijs(-1)">&#8722;</button>
-                        <input type="number" id="editStoelen" name="aantal_stoelen" value="1" min="1" max="10" readonly>
-                        <button type="button" class="counter-btn" id="editPlusBtn" onclick="editUpdatePrijs(1)">&#43;</button>
-                    </div>
-                </div>
-
-                <div class="prijs-preview">
-                    <span>Nieuw totaal:</span>
-                    <strong id="editNieuwTotaal">&euro;0,00</strong>
-                </div>
-
-                <div class="form-group">
-                    <label>Betaalmethode</label>
-                    <div class="betaal-opties">
-                        <label class="betaal-optie">
-                            <input type="radio" name="betaalmethode" value="ideal" checked>
-                            <span><i class="fa-solid fa-bolt"></i> iDEAL</span>
-                        </label>
-                        <label class="betaal-optie">
-                            <input type="radio" name="betaalmethode" value="creditcard">
-                            <span><i class="fa-solid fa-credit-card"></i> Creditcard</span>
-                        </label>
-                        <label class="betaal-optie">
-                            <input type="radio" name="betaalmethode" value="pin">
-                            <span><i class="fa-solid fa-mobile-screen"></i> Pin</span>
-                        </label>
-                        <label class="betaal-optie">
-                            <input type="radio" name="betaalmethode" value="contant">
-                            <span><i class="fa-solid fa-money-bill-wave"></i> Contant</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn btn--ghost" onclick="closeEditModal()">Annuleren</button>
-                    <button type="submit" class="btn btn--primary">Opslaan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- ANNULER MODAL -->
 <div class="modal-overlay hidden" id="cancelModal">
     <div class="modal modal--sm">
         <div class="modal-header">
@@ -360,10 +280,8 @@ function changeTypeIcon(string $type): string {
     </div>
 </div>
 
-<!-- NOTIFICATION -->
 <div id="notification" class="notification"></div>
 
-<!-- FOOTER -->
 <footer class="footer">
     <h3>Aurora Theater</h3>
     <p>Waar emoties, kunst en verhalen samenkomen.</p>
