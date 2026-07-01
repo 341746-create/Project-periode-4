@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestaande medewerker wijzigen — Het Repertoire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="house-glow" aria-hidden="true"></div>
+
+  <div class="curtain-rig" aria-hidden="true">
+    <div class="curtain curtain--left">
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="curtain curtain--right">
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="valance"></div>
+  </div>
+
+  <div class="spotlight" aria-hidden="true"></div>
+
+  <div class="stage">
+
+    <header class="masthead">
+      <p class="masthead__eyebrow">Het Repertoire — Personeelsregistratie</p>
+      <h1 class="masthead__title">Bestaande medewerker<br><em>wijzigen</em></h1>
+      <p class="masthead__sub">Werk de cast-gegevens van een lid van het gezelschap bij.</p>
+    </header>
+
+    <main class="playbill" id="playbill">
+
+      <div class="playbill__ribbon"><span>Herbezetting</span></div>
+
+      <form id="employee-form" class="form" novalidate>
+
+        <fieldset class="form__group">
+          <legend>Medewerker opzoeken</legend>
+
+          <div class="field">
+            <label for="zoek_medewerker">Naam of personeelsnummer <span class="req">*</span></label>
+            <select id="zoek_medewerker" name="zoek_medewerker" required>
+              <option value="" disabled selected>Kies een medewerker…</option>
+              <option value="PN-1001">PN-1001 — Sanne de Vries</option>
+              <option value="PN-1002">PN-1002 — Daan Bakker</option>
+              <option value="PN-1003">PN-1003 — Layla El Amrani</option>
+            </select>
+            <span class="field__error" data-error-for="zoek_medewerker"></span>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__group" id="bewerk-velden" disabled>
+          <legend>Persoonsgegevens</legend>
+
+          <div class="field">
+            <label for="voornaam">Voornaam <span class="req">*</span></label>
+            <input type="text" id="voornaam" name="voornaam" autocomplete="given-name" required>
+            <span class="field__error" data-error-for="voornaam"></span>
+          </div>
+
+          <div class="field">
+            <label for="achternaam">Achternaam <span class="req">*</span></label>
+            <input type="text" id="achternaam" name="achternaam" autocomplete="family-name" required>
+            <span class="field__error" data-error-for="achternaam"></span>
+          </div>
+
+          <div class="field field--half">
+            <label for="email">E-mailadres <span class="req">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <span class="field__error" data-error-for="email"></span>
+          </div>
+
+          <div class="field field--half">
+            <label for="telefoonnummer">Telefoonnummer</label>
+            <input type="tel" id="telefoonnummer" name="telefoonnummer" placeholder="06 12345678">
+            <span class="field__error" data-error-for="telefoonnummer"></span>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__group" id="rol-velden" disabled>
+          <legend>Rol binnen het gezelschap</legend>
+
+          <div class="field field--half">
+            <label for="afdeling">Afdeling <span class="req">*</span></label>
+            <select id="afdeling" name="afdeling" required>
+              <option value="Artistiek">Artistiek</option>
+              <option value="Techniek">Techniek</option>
+              <option value="Front of House">Front of House</option>
+              <option value="Productie">Productie</option>
+            </select>
+            <span class="field__error" data-error-for="afdeling"></span>
+          </div>
+
+          <div class="field field--half">
+            <label for="functie">Functie <span class="req">*</span></label>
+            <select id="functie" name="functie" required>
+              <option value="Regisseur">Regisseur</option>
+              <option value="Acteur">Acteur</option>
+              <option value="Lichttechnicus">Lichttechnicus</option>
+              <option value="Geluidstechnicus">Geluidstechnicus</option>
+              <option value="Decorbouwer">Decorbouwer</option>
+              <option value="Kassamedewerker">Kassamedewerker</option>
+              <option value="Producent">Producent</option>
+            </select>
+            <span class="field__error" data-error-for="functie"></span>
+          </div>
+
+          <div class="field">
+            <label for="status">Status <span class="req">*</span></label>
+            <select id="status" name="status" required>
+              <option value="actief">Actief</option>
+              <option value="inactief">Inactief</option>
+            </select>
+            <span class="field__error" data-error-for="status"></span>
+          </div>
+        </fieldset>
+
+        <div class="form__actions">
+          <button type="reset" class="btn btn--ghost">Annuleren</button>
+          <button type="submit" class="btn btn--primary" id="submit-btn" disabled>
+            <span class="btn__label">Wijzigingen opslaan</span>
+          </button>
+        </div>
+
+        <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+
+  </div>
+
+  <div class="curtain-call" id="curtain-call" aria-hidden="true">
+    <div class="curtain-call__inner">
+      <p class="curtain-call__eyebrow">Cast bijgewerkt</p>
+      <p class="curtain-call__name" id="curtain-call-name"></p>
+      <p class="curtain-call__role" id="curtain-call-role"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
