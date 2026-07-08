@@ -46,6 +46,15 @@ if ! mysql -uroot -h127.0.0.1 -P"$MYSQL_PORT" aurora_theater -e "SHOW TABLES LIK
 fi
 echo "[start] Database 'aurora_theater' is klaar."
 
+# 3b. Voorbeelddata vullen wanneer er nog geen reserveringen zijn
+if [ -f "$DIR/seed.sql" ]; then
+  RES_COUNT=$(mysql -uroot -h127.0.0.1 -P"$MYSQL_PORT" aurora_theater -N -e "SELECT COUNT(*) FROM reserveringen;" 2>/dev/null || echo 1)
+  if [ "$RES_COUNT" = "0" ]; then
+    echo "[start] Voorbeeldtickets toevoegen..."
+    mysql -uroot -h127.0.0.1 -P"$MYSQL_PORT" aurora_theater < "$DIR/seed.sql"
+  fi
+fi
+
 # 4. Start de website (PHP built-in server)
 if curl -s "http://127.0.0.1:$PHP_PORT/" >/dev/null 2>&1; then
   echo "[start] Website draait al op http://localhost:$PHP_PORT"
