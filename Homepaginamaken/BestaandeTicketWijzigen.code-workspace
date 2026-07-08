@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "../../../BestaandeTicketWijzigen"
+		},
+		{
+			"path": "nieuwe_ticket"
+		},
+		{
+			"path": "ticket_overzicht"
+		},
+		{
+			"path": "../NieuweTicketToevoegen"
+		},
+		{
+			"path": "../ticket scannen"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

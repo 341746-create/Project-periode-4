@@ -15,34 +15,30 @@
   const curtainName   = document.getElementById('curtain-call-name');
   const curtainRole   = document.getElementById('curtain-call-role');
 
-  // In-memory "personeelslijst" — mirrors the `medewerkers` table in database.sql.
-  // In a real deployment this would come from / be saved to that table via an API.
-  let medewerkers = [
-    {
-      personeelsnummer: 'PN-1001',
-      voornaam: 'Sanne',
-      achternaam: 'de Vries',
-      afdeling: 'Artistiek',
-      functie: 'Regisseur',
-      datum_in_dienst: '2021-09-01'
-    },
-    {
-      personeelsnummer: 'PN-1002',
-      voornaam: 'Daan',
-      achternaam: 'Bakker',
-      afdeling: 'Techniek',
-      functie: 'Lichttechnicus',
-      datum_in_dienst: '2022-02-15'
-    },
-    {
-      personeelsnummer: 'PN-1003',
-      voornaam: 'Layla',
-      achternaam: 'El Amrani',
-      afdeling: 'Front of House',
-      functie: 'Kassamedewerker',
-      datum_in_dienst: '2023-05-10'
-    }
+  // Mock data en helperfuncties voor localStorage
+  const defaultMedewerkers = [
+    { personeelsnummer: 'PN-1001', voornaam: 'Sanne',  achternaam: 'de Vries',  email: 's.devries@auroratheater.nl',  afdeling: 'Artistiek',      functie: 'Regisseur',       datum_in_dienst: '2021-09-01', status: 'actief', telefoonnummer: '0612345678' },
+    { personeelsnummer: 'PN-1002', voornaam: 'Daan',   achternaam: 'Bakker',    email: 'd.bakker@auroratheater.nl',   afdeling: 'Techniek',       functie: 'Lichttechnicus',  datum_in_dienst: '2022-02-15', status: 'actief', telefoonnummer: '0623456789' },
+    { personeelsnummer: 'PN-1003', voornaam: 'Layla',  achternaam: 'El Amrani', email: 'l.elamrani@auroratheater.nl', afdeling: 'Front of House', functie: 'Kassamedewerker', datum_in_dienst: '2023-05-10', status: 'actief', telefoonnummer: '0634567890' },
+    { personeelsnummer: 'PN-1004', voornaam: 'Imraan', achternaam: 'Ghafoori',  email: 'i.ghafoori@auroratheater.nl', afdeling: 'Productie',      functie: 'Producent',       datum_in_dienst: '2026-06-18', status: 'actief', telefoonnummer: '' },
+    { personeelsnummer: 'PN-0987', voornaam: 'Tobias', achternaam: 'Hendriks',  email: 't.hendriks@auroratheater.nl', afdeling: 'Techniek',       functie: 'Decorbouwer',     datum_in_dienst: '2019-11-03', status: 'inactief', telefoonnummer: '' },
+    { personeelsnummer: 'PN-1005', voornaam: 'Anouk',  achternaam: 'de Jong',   email: 'a.dejong@auroratheater.nl',   afdeling: 'Front of House', functie: 'Kassamedewerker', datum_in_dienst: '2024-01-10', status: 'actief', telefoonnummer: '' }
   ];
+
+  function getEmployees() {
+      let list = localStorage.getItem('aurora_theater_medewerkers');
+      if (!list) {
+          localStorage.setItem('aurora_theater_medewerkers', JSON.stringify(defaultMedewerkers));
+          return defaultMedewerkers;
+      }
+      return JSON.parse(list);
+  }
+
+  function saveEmployees(list) {
+      localStorage.setItem('aurora_theater_medewerkers', JSON.stringify(list));
+  }
+
+  let medewerkers = getEmployees();
 
   const fieldDefs = [
     { name: 'voornaam',         label: 'Voornaam',          required: true },
@@ -75,6 +71,7 @@
   }
 
   function validate(data) {
+    medewerkers = getEmployees();
     let firstInvalid = null;
     let isValid = true;
 
@@ -110,6 +107,7 @@
   }
 
   function renderRoster() {
+    medewerkers = getEmployees();
     rosterBody.innerHTML = '';
 
     medewerkers
@@ -187,7 +185,20 @@
 
     // In production: POST nieuweMedewerker to the backend, which performs
     // INSERT INTO medewerkers (...) VALUES (...) per database.sql.
+    medewerkers = getEmployees();
+    
+    // Dubbel controleer personeelsnummer
+    const exists = medewerkers.some(
+      m => m.personeelsnummer.toLowerCase() === nieuweMedewerker.personeelsnummer.toLowerCase()
+    );
+    if (exists) {
+      setStatus('Dit personeelsnummer is al in gebruik.', 'error');
+      return;
+    }
+
+    nieuweMedewerker.status = 'actief';
     medewerkers.push(nieuweMedewerker);
+    saveEmployees(medewerkers);
     renderRoster();
 
     showCurtainCall(
@@ -220,3 +231,30 @@
 
   renderRoster();
 })();
+// Dropdown toggle function
+function toggleDropdown(btn) {
+    const menu = btn.nextElementSibling;
+    if (menu && menu.classList.contains('dropdown-menu')) {
+        menu.classList.toggle('open');
+        btn.classList.toggle('active');
+    }
+    // Close other dropdowns
+    document.querySelectorAll('.dropdown-menu.open').forEach(m => {
+        if (m !== menu) {
+            m.classList.remove('open');
+            m.previousElementSibling.classList.remove('active');
+        }
+    });
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-menu.open').forEach(m => {
+            m.classList.remove('open');
+        });
+        document.querySelectorAll('.dropdown-toggle.active').forEach(b => {
+            b.classList.remove('active');
+        });
+    }
+});

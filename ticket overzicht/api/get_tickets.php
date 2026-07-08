@@ -8,10 +8,17 @@ header('Access-Control-Allow-Origin: *');
 
 require_once __DIR__ . '/../../config/database.php';
 
-// Demo: gebruiker ID via GET of sessie
-$gebruiker_id = isset($_GET['gebruiker_id']) ? (int)$_GET['gebruiker_id'] : 2;
+$gebruiker_id = 2;
+if (isset($_GET['gebruiker_id'])) {
+    $gebruiker_id = (int)$_GET['gebruiker_id'];
+} elseif (isset($_COOKIE['gebruiker_id'])) {
+    $gebruiker_id = (int)$_COOKIE['gebruiker_id'];
+}
 
 try {
+    // ── READ (happy scenario) ───────────────────────────────────────
+    // Een succesvolle 'read': haal alle reserveringen (tickets) van de
+    // ingelogde gebruiker op uit de database en geef ze terug als JSON.
     $stmt = db()->prepare("
         SELECT
             r.id,
@@ -33,6 +40,8 @@ try {
     $stmt->execute([':uid' => $gebruiker_id]);
     $tickets = $stmt->fetchAll();
 
+    // ── READ resultaat ──────────────────────────────────────────────
+    // Bij een lege lijst blijft het een geslaagde read (count = 0).
     echo json_encode([
         'success' => true,
         'data'    => $tickets,
@@ -40,6 +49,9 @@ try {
     ]);
 
 } catch (Exception $e) {
+    // ── READ (unhappy scenario) ────────────────────────────────────
+    // De database is niet bereikbaar of de query faalt: geef een
+    // nette foutmelding terug in plaats van een crashende pagina.
     http_response_code(500);
     echo json_encode([
         'success' => false,

@@ -21,16 +21,46 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 function toggleDropdown(e) {
     e.preventDefault();
-    const dropdown = document.getElementById("mijnTicketsDropdown");
-    const menu = document.getElementById("dropdownMenu");
+    const dropdown = e.currentTarget.closest(".dropdown");
+    if (!dropdown) return;
+
+    const menu = dropdown.querySelector(".dropdown-menu");
+    if (!menu) return;
+
+    document.querySelectorAll(".dropdown-menu.open").forEach((openMenu) => {
+        if (openMenu !== menu) openMenu.classList.remove("open");
+    });
+
     menu.classList.toggle("open");
 }
 
 document.addEventListener("click", function(e) {
-    const dropdown = document.getElementById("mijnTicketsDropdown");
-    if (!dropdown) return;
-    const menu = document.getElementById("dropdownMenu");
-    if (!dropdown.contains(e.target)) {
-        menu.classList.remove("open");
+    document.querySelectorAll(".dropdown-menu.open").forEach((menu) => {
+        const dropdown = menu.closest(".dropdown");
+        if (!dropdown || !dropdown.contains(e.target)) {
+            menu.classList.remove("open");
+        }
+    });
+});
+
+// ── Uitloggen modal ──
+function openLogoutModal() {
+    document.querySelectorAll(".dropdown-menu.open").forEach(m => m.classList.remove("open"));
+    document.getElementById("logoutModal").classList.add("open");
+    document.body.style.overflow = "hidden";
+}
+
+function closeLogoutModal() {
+    document.getElementById("logoutModal").classList.remove("open");
+    document.body.style.overflow = "";
+}
+
+function closeLogoutModalOutside(e) {
+    if (e.target === document.getElementById("logoutModal")) {
+        closeLogoutModal();
     }
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeLogoutModal();
 });

@@ -35,6 +35,7 @@ try {
     <meta name="description" content="Reserveer uw Aurora Theater tickets eenvoudig online.">
     <title>Nieuw Ticket Reserveren — Aurora Theater</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style/header.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
@@ -42,19 +43,65 @@ try {
 
 <header class="header">
     <div class="header-inner">
-        <a href="../index.php" class="logo">
+        <a href="/index.php" class="logo">
             <i class="fa-solid fa-masks-theater"></i>
             Aurora Theater
         </a>
         <nav>
-            <a href="../ticket_overzicht/index.php"><i class="fa-solid fa-list"></i> Mijn Tickets</a>
-            <a href="../ticket_scannen/index.php"><i class="fa-solid fa-qrcode"></i> Scanner</a>
+            <a href="/ticket%20overzicht/index.php"><i class="fa-solid fa-list"></i> Mijn Tickets</a>
+            <a href="/ticket%20scannen/index.php"><i class="fa-solid fa-qrcode"></i> Scanner</a>
         </nav>
     </div>
 </header>
 
 <main class="main-content">
-    <div class="form-container">
+    <div class="shows-section">
+        <div class="shows-header">
+            <h2><i class="fa-solid fa-masks-theater"></i> Huidige Voorstellingen</h2>
+            <p>Bekijk ons actuele aanbod en reserveer direct uw tickets</p>
+        </div>
+
+        <div class="shows-grid">
+            <?php if (empty($voorstellingen)): ?>
+            <div class="shows-empty">
+                <i class="fa-solid fa-calendar-xmark"></i>
+                <p>Er zijn momenteel geen voorstellingen beschikbaar.</p>
+            </div>
+            <?php else: ?>
+            <?php foreach ($voorstellingen as $show): ?>
+            <article class="show-card-large" data-voorstelling="<?= (int)$show['id'] ?>">
+                <div class="show-card-image">
+                    <?php if (!empty($show['afbeelding_url'])): ?>
+                        <img src="<?= htmlspecialchars($show['afbeelding_url']) ?>" alt="<?= htmlspecialchars($show['titel']) ?>" loading="lazy">
+                    <?php else: ?>
+                        <div class="show-card-placeholder">
+                            <i class="fa-solid fa-masks-theater"></i>
+                        </div>
+                    <?php endif; ?>
+                    <span class="show-card-badge"><?= htmlspecialchars(ucfirst($show['categorie'])) ?></span>
+                </div>
+                <div class="show-card-body">
+                    <h3><?= htmlspecialchars($show['titel']) ?></h3>
+                    <p class="show-card-desc"><?= htmlspecialchars($show['beschrijving'] ?? '') ?></p>
+                    <div class="show-card-meta">
+                        <span><i class="fa-regular fa-calendar"></i> <?= date('d M Y', strtotime($show['datum'])) ?></span>
+                        <span><i class="fa-regular fa-clock"></i> <?= substr($show['aanvangstijd'], 0, 5) ?></span>
+                        <span><i class="fa-solid fa-chair"></i> <?= (int)$show['beschikbare_stoelen'] ?> vrij</span>
+                    </div>
+                    <div class="show-card-footer">
+                        <strong class="show-card-price">&euro;<?= number_format((float)$show['prijs_per_stoel'], 2, ',', '.') ?></strong>
+                        <button type="button" class="btn btn--primary btn--sm reserve-from-show" data-id="<?= (int)$show['id'] ?>">
+                            <i class="fa-solid fa-ticket"></i> Reserveer
+                        </button>
+                    </div>
+                </div>
+            </article>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="form-container" id="reserveringFormContainer">
         <div class="form-header">
             <h1><i class="fa-solid fa-ticket"></i> Nieuw Ticket Reserveren</h1>
             <p>Kies een voorstelling en vul uw gegevens in</p>
@@ -201,8 +248,7 @@ try {
                     <p id="successMessage"></p>
                     <div class="ticket-code-display" id="ticketCodeDisplay"></div>
                     <div class="success-actions">
-                        <a href="../ticket_overzicht/index.php" class="btn btn--primary">Mijn Tickets bekijken</a>
-                        <a href="../index.php" class="btn btn--ghost">Terug naar Home</a>
+                        <a href="/ticket%20overzicht/index.php" class="btn btn--primary">Mijn Tickets bekijken</a>
                     </div>
                 </div>
             </div>

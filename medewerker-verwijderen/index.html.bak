@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestaande medewerker verwijderen — Het Repertoire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="house-glow" aria-hidden="true"></div>
+
+  <div class="curtain-rig" aria-hidden="true">
+    <div class="curtain curtain--left">
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="curtain curtain--right">
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div><div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="valance"></div>
+  </div>
+
+  <div class="spotlight" aria-hidden="true"></div>
+
+  <div class="stage">
+
+    <header class="masthead">
+      <p class="masthead__eyebrow">Het Repertoire — Personeelsregistratie</p>
+      <h1 class="masthead__title">Bestaande medewerker<br><em>verwijderen</em></h1>
+      <p class="masthead__sub">Neem afscheid van een lid van het gezelschap.</p>
+    </header>
+
+    <main class="playbill" id="playbill">
+
+      <div class="playbill__ribbon"><span>Afscheidsvoorstelling</span></div>
+
+      <form id="delete-form" class="form" novalidate>
+
+        <fieldset class="form__group">
+          <legend>Medewerker selecteren</legend>
+
+          <div class="field">
+            <label for="zoek_medewerker">Naam of personeelsnummer <span class="req">*</span></label>
+            <select id="zoek_medewerker" name="zoek_medewerker" required>
+              <option value="" disabled selected>Kies een medewerker…</option>
+              <option value="PN-1001">PN-1001 — Sanne de Vries</option>
+              <option value="PN-1002">PN-1002 — Daan Bakker</option>
+              <option value="PN-1003">PN-1003 — Layla El Amrani</option>
+            </select>
+            <span class="field__error" data-error-for="zoek_medewerker"></span>
+          </div>
+        </fieldset>
+
+        <div class="account-card" id="account-card" hidden>
+          <div class="account-card__row">
+            <span class="account-card__label">Naam</span>
+            <span class="account-card__value" id="card-naam">—</span>
+          </div>
+          <div class="account-card__row">
+            <span class="account-card__label">Afdeling</span>
+            <span class="account-card__value" id="card-afdeling">—</span>
+          </div>
+          <div class="account-card__row">
+            <span class="account-card__label">Functie</span>
+            <span class="account-card__value" id="card-functie">—</span>
+          </div>
+          <div class="account-card__row">
+            <span class="account-card__label">In dienst sinds</span>
+            <span class="account-card__value" id="card-datum">—</span>
+          </div>
+        </div>
+
+        <div class="warning-box" id="warning-box" hidden>
+          <p class="warning-box__title">Het doek valt voor deze rol</p>
+          <p class="warning-box__body">
+            Het verwijderen van deze medewerker kan niet ongedaan worden gemaakt.
+            Alle bijbehorende gegevens worden permanent uit de personeelslijst verwijderd.
+          </p>
+          <label class="confirm-check">
+            <input type="checkbox" id="bevestig_check" name="bevestig_check">
+            <span>Ik begrijp dat deze actie permanent is en bevestig de verwijdering.</span>
+          </label>
+        </div>
+
+        <div class="form__actions">
+          <button type="reset" class="btn btn--ghost">Annuleren</button>
+          <button type="submit" class="btn btn--danger" id="submit-btn" disabled>
+            <span class="btn__label">Medewerker verwijderen</span>
+          </button>
+        </div>
+
+        <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+
+    <div class="page-links">
+      <a href="/index.php">Terug naar home</a>
+      <a href="/Medewerker%20beheren/index.php">Naar medewerker beheren</a>
+    </div>
+
+  </div>
+
+  <div class="curtain-call curtain-call--danger" id="curtain-call" aria-hidden="true">
+    <div class="curtain-call__inner">
+      <p class="curtain-call__eyebrow">Afscheid genomen</p>
+      <p class="curtain-call__name" id="curtain-call-name"></p>
+      <p class="curtain-call__role">Is verwijderd uit de personeelslijst.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

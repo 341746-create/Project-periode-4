@@ -124,11 +124,11 @@ try {
     // 5. Verminder beschikbare stoelen
     $updStoelen = $pdo->prepare("
         UPDATE voorstellingen
-        SET beschikbare_stoelen = beschikbare_stoelen - :n,
-            status = CASE WHEN beschikbare_stoelen - :n <= 0 THEN 'uitverkocht' ELSE status END
+        SET beschikbare_stoelen = beschikbare_stoelen - :n1,
+            status = CASE WHEN beschikbare_stoelen - :n2 <= 0 THEN 'uitverkocht' ELSE status END
         WHERE id = :id
     ");
-    $updStoelen->execute([':n' => $aantal_stoelen, ':id' => $voorstelling_id]);
+    $updStoelen->execute([':n1' => $aantal_stoelen, ':n2' => $aantal_stoelen, ':id' => $voorstelling_id]);
 
     $pdo->commit();
 

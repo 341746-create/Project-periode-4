@@ -1,42 +1,24 @@
 <?php
 // ============================================================
-//  Aurora Theater — Database configuratie
+//  Database configuratie — Aurora Theater
 // ============================================================
 
-define('DB_HOST',    'localhost');
-define('DB_PORT',    '3306');
-define('DB_NAME',    'aurora_theater');
-define('DB_USER',    'root');
-define('DB_PASS',    '');
-define('DB_CHARSET', 'utf8mb4');
-
-/**
- * Geeft een PDO-instantie terug (singleton).
- */
-function db(): PDO
-{
+function db(): PDO {
     static $pdo = null;
+    if ($pdo !== null) return $pdo;
 
-    if ($pdo === null) {
-        $dsn = sprintf(
-            'mysql:unix_socket=%s;dbname=%s;charset=%s',
-            '/opt/lampp/var/mysql/mysql.sock',
-            DB_NAME,
-            DB_CHARSET
-        );
+    $host = '127.0.0.1';
+    $db   = 'aurora_theater';
+    $user = 'aurora';
+    $pass = 'Aurora2026!';
 
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
+    $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 
-        try {
-            $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
-        } catch (PDOException $e) {
-            throw new RuntimeException('Database verbinding mislukt: ' . $e->getMessage());
-        }
-    }
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ]);
 
     return $pdo;
 }

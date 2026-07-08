@@ -5,8 +5,13 @@
 require_once __DIR__ . '/../config/database.php';
 
 $gebruiker_id = 2;
+if (isset($_GET['gebruiker_id'])) {
+    $gebruiker_id = (int)$_GET['gebruiker_id'];
+} elseif (isset($_COOKIE['gebruiker_id'])) {
+    $gebruiker_id = (int)$_COOKIE['gebruiker_id'];
+}
 
-$error = null;
+$dbError = null;
 try {
     $stmt = db()->prepare("
         SELECT
@@ -29,11 +34,11 @@ try {
     $stmt->execute([':uid' => $gebruiker_id]);
     $tickets = $stmt->fetchAll();
 } catch (Exception $e) {
-    $error = $e->getMessage();
+    $dbError = $e->getMessage();
     $tickets = [
-        ['id' => 1, 'voorstelling' => 'Hamlet',  'datum' => '2026-07-10', 'aanvangstijd' => '20:00', 'zaal' => 'Grote Zaal',  'aantal_stoelen' => 1, 'totaalprijs' => '24.50', 'status' => 'bevestigd',      'betaalmethode' => 'ideal',  'aangemaakt_op' => '2026-06-01 10:00:00'],
-        ['id' => 2, 'voorstelling' => 'Macbeth', 'datum' => '2026-07-11', 'aanvangstijd' => '19:30', 'zaal' => 'Main Stage', 'aantal_stoelen' => 2, 'totaalprijs' => '78.00', 'status' => 'in_behandeling', 'betaalmethode' => 'pin',   'aangemaakt_op' => '2026-06-02 11:00:00'],
-        ['id' => 3, 'voorstelling' => 'Othello', 'datum' => '2026-07-12', 'aanvangstijd' => '20:00', 'zaal' => 'Kleine Zaal','aantal_stoelen' => 1, 'totaalprijs' => '19.50', 'status' => 'geannuleerd',    'betaalmethode' => null,     'aangemaakt_op' => '2026-06-03 09:30:00'],
+        ['id' => 1, 'voorstelling' => 'Modern Drama',  'datum' => '2026-07-10', 'aanvangstijd' => '20:00', 'zaal' => 'Grote Zaal',  'aantal_stoelen' => 1, 'totaalprijs' => '24.50', 'status' => 'bevestigd',      'betaalmethode' => 'ideal',  'aangemaakt_op' => '2026-06-01 10:00:00'],
+        ['id' => 2, 'voorstelling' => 'Broadway Musical Night', 'datum' => '2026-07-11', 'aanvangstijd' => '19:30', 'zaal' => 'Main Stage', 'aantal_stoelen' => 2, 'totaalprijs' => '78.00', 'status' => 'in_behandeling', 'betaalmethode' => 'pin',   'aangemaakt_op' => '2026-06-02 11:00:00'],
+        ['id' => 3, 'voorstelling' => 'Klassiek Shakespeare', 'datum' => '2026-07-12', 'aanvangstijd' => '20:00', 'zaal' => 'Kleine Zaal','aantal_stoelen' => 1, 'totaalprijs' => '19.50', 'status' => 'geannuleerd',    'betaalmethode' => null,     'aangemaakt_op' => '2026-06-03 09:30:00'],
     ];
 }
 
@@ -61,143 +66,81 @@ function statusClass(string $status): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bekijk en beheer uw Aurora Theater tickets.">
+    <meta name="description" content="Bekijk uw Aurora Theater tickets.">
     <title>Ticket Overzicht — Aurora Theater</title>
+    <link rel="stylesheet" href="/style/header.css">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-<header class="header">
-    <div class="header-inner">
-        <a href="../index.php" class="logo">
+<header class="header" id="siteHeader">
+    <nav class="nav container">
+        <a href="/Homepaginamaken/index.php" class="logo">
             <i class="fa-solid fa-masks-theater"></i>
             Aurora Theater
         </a>
-        <nav>
-            <a href="../nieuwe_ticket/index.php"><i class="fa-solid fa-plus"></i> Nieuw Ticket</a>
-            <a href="../ticket_scannen/index.php"><i class="fa-solid fa-qrcode"></i> Scanner</a>
-            <a href="../index.php"><i class="fa-solid fa-house"></i> Home</a>
-        </nav>
-    </div>
+
+        <ul class="nav-links">
+            <li><a href="#tickets"><i class="fa-solid fa-ticket"></i> Tickets</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <a href="/BestaandeTicketWijzigen/index.php" class="btn btn--primary"><i class="fa-solid fa-pen-to-square"></i> Wijzigen</a>
+            <a href="/ticket%20scannen/index.php" class="btn btn--ghost"><i class="fa-solid fa-qrcode"></i> Scanner</a>
+        </div>
+    </nav>
 </header>
 
 <main>
-    <div class="container-main">
-        <?php if ($error): ?>
-        <div class="notification error" style="display:block;position:relative;top:auto;right:auto;margin-bottom:1.5rem;">
-            <i class="fa-solid fa-triangle-exclamation"></i> Database niet verbonden — demo-data wordt getoond.
+    <section id="tickets" class="section container">
+        <h2 class="section-title">Mijn Tickets</h2>
+
+        <?php if ($dbError): ?>
+        <div class="notification error">
+            <i class="fa-solid fa-triangle-exclamation"></i> Demo-data wordt getoond (database niet beschikbaar).
         </div>
         <?php endif; ?>
 
-        <section class="tickets-container">
-            <h2><i class="fa-solid fa-ticket"></i> 🎭 Uw Tickets</h2>
-
-            <?php if (empty($tickets)): ?>
-            <div class="empty-state">
-                <i class="fa-solid fa-ticket"></i>
-                <p>U heeft nog geen tickets gereserveerd.</p>
-                <a href="../nieuwe_ticket/index.php">Reserveer nu <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-            <?php else: ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Ticketcode</th>
-                        <th>Voorstelling</th>
-                        <th>Datum & Tijd</th>
-                        <th>Zaal</th>
-                        <th>Stoelen</th>
-                        <th>Prijs</th>
-                        <th>Status</th>
-                        <th>Acties</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($tickets as $ticket): ?>
-                    <?php 
-                    $ticket_code = sprintf('AUR-%d-%d', (int)$ticket['id'], $gebruiker_id);
-                    ?>
-                    <tr id="row-<?= (int)$ticket['id'] ?>">
-                        <td><?= (int)$ticket['id'] ?></td>
-                        <td><code class="ticket-code"><?= htmlspecialchars($ticket_code) ?></code></td>
-                        <td><strong><?= htmlspecialchars($ticket['voorstelling']) ?></strong></td>
-                        <td>
-                            <?= date('d M Y', strtotime($ticket['datum'])) ?>
-                            <small><?= substr($ticket['aanvangstijd'], 0, 5) ?></small>
-                        </td>
-                        <td><?= htmlspecialchars($ticket['zaal']) ?></td>
-                        <td><?= (int)$ticket['aantal_stoelen'] ?></td>
-                        <td><strong style="color:#d4af37;">&euro;<?= number_format((float)$ticket['totaalprijs'], 2, ',', '.') ?></strong></td>
-                        <td>
-                            <span class="status <?= statusClass($ticket['status']) ?>">
-                                <?= statusLabel($ticket['status']) ?>
-                            </span>
-                        </td>
-                        <td>
-                            <?php if ($ticket['status'] !== 'geannuleerd'): ?>
-                            <button class="edit" onclick="openEditModal(<?= (int)$ticket['id'] ?>)">
-                                <i class="fa-solid fa-pen"></i> Bewerk
-                            </button>
-                            <button class="cancel" onclick="openCancelModal(<?= (int)$ticket['id'] ?>)">
-                                <i class="fa-solid fa-xmark"></i> Annuleer
-                            </button>
-                            <?php else: ?>
-                            <span style="color:#555;font-size:.85rem;">—</span>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <?php endif; ?>
-        </section>
-    </div>
+        <?php if (empty($tickets)): ?>
+        <div class="empty-state">
+            <i class="fa-solid fa-ticket"></i>
+            <p>U heeft nog geen tickets gereserveerd.</p>
+            <a href="/NieuweTicketToevoegen/index.php">Reserveer nu <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <?php else: ?>
+        <div class="grid">
+            <?php foreach ($tickets as $ticket): ?>
+            <?php 
+            $ticket_code = sprintf('AUR-%d-%d', (int)$ticket['id'], $gebruiker_id);
+            ?>
+            <article class="ticket-card" data-id="<?= (int)$ticket['id'] ?>">
+                <div class="ticket-header">
+                    <span class="ticket-code"><?= htmlspecialchars($ticket_code) ?></span>
+                    <span class="status <?= statusClass($ticket['status']) ?>"><?= statusLabel($ticket['status']) ?></span>
+                </div>
+                <h3><?= htmlspecialchars($ticket['voorstelling']) ?></h3>
+                <p class="ticket-details">
+                    <span><i class="fa-regular fa-calendar"></i> <?= date('d M Y', strtotime($ticket['datum'])) ?></span>
+                    <span><i class="fa-regular fa-clock"></i> <?= substr($ticket['aanvangstijd'], 0, 5) ?></span>
+                    <span><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($ticket['zaal']) ?></span>
+                </p>
+                <div class="ticket-footer">
+                    <span><?= (int)$ticket['aantal_stoelen'] ?> stoel(en)</span>
+                    <strong style="color:#d4af37;">&euro;<?= number_format((float)$ticket['totaalprijs'], 2, ',', '.') ?></strong>
+                </div>
+            </article>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+    </section>
 </main>
 
-<!-- Modal: Bewerken -->
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('editModal')">&times;</span>
-        <h3><i class="fa-solid fa-pen"></i> Ticket Bewerken</h3>
-        <form id="editForm">
-            <input type="hidden" id="editTicketId">
-            <label for="editStoelen">Aantal stoelen:</label>
-            <input type="number" id="editStoelen" min="1" max="10" required>
-            <label for="editBetaalmethode">Betaalmethode:</label>
-            <select id="editBetaalmethode">
-                <option value="ideal">iDEAL</option>
-                <option value="creditcard">Creditcard</option>
-                <option value="pin">Pin</option>
-                <option value="contant">Contant</option>
-            </select>
-            <button type="submit"><i class="fa-solid fa-check"></i> Opslaan</button>
-        </form>
-    </div>
-</div>
-
-<!-- Modal: Annuleren -->
-<div id="cancelModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('cancelModal')">&times;</span>
-        <h3><i class="fa-solid fa-triangle-exclamation"></i> Annuleer Ticket</h3>
-        <p style="color:#aaa;margin-bottom:20px;">Weet je zeker dat je dit ticket wilt annuleren?</p>
-        <input type="hidden" id="cancelTicketId">
-        <button id="confirmCancel" class="cancel" style="padding:12px 24px;">
-            <i class="fa-solid fa-xmark"></i> Ja, annuleer
-        </button>
-        <button type="button" onclick="closeModal('cancelModal')" style="background:rgba(255,255,255,0.08);color:#fff;padding:10px 20px;margin-top:8px;">
-            Nee
-        </button>
-    </div>
-</div>
-
-<div id="notification" class="notification"></div>
-
-<footer>
-    <strong>Aurora Theater</strong> &copy; <?= date('Y') ?>
+<footer class="footer">
+    <h3>Aurora Theater</h3>
+    <p>Waar emoties, kunst en verhalen samenkomen.</p>
+    <p>&copy; <?= date('Y') ?> Aurora Theater</p>
 </footer>
 
 <script src="script.js"></script>

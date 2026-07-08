@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nieuwe medewerker toevoegen — Het Repertoire</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="house-glow" aria-hidden="true"></div>
+
+  <div class="curtain-rig" aria-hidden="true">
+    <div class="curtain curtain--left">
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="curtain curtain--right">
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="valance"></div> </div>
+
+  <div class="spotlight" aria-hidden="true"></div>
+
+  <div class="stage">
+
+    <header class="masthead">
+      <p class="masthead__eyebrow">Het Repertoire — Personeelsregistratie</p>
+      <h1 class="masthead__title">Nieuwe medewerker<br><em>toevoegen aan de cast</em></h1>
+      <p class="masthead__sub">Vul de gegevens in om een nieuw bemanningslid op te nemen in de personeelslijst.</p>
+    </header>
+
+    <main class="playbill" id="playbill">
+
+      <div class="playbill__ribbon">
+        <span>Casting call</span>
+      </div>
+
+      <form id="employee-form" class="form" novalidate>
+
+        <fieldset class="form__group">
+          <legend>Persoonsgegevens</legend>
+
+          <div class="field">
+            <label for="voornaam">Voornaam <span class="req">*</span></label>
+            <input type="text" id="voornaam" name="voornaam" autocomplete="given-name" required>
+            <span class="field__error" data-error-for="voornaam"></span> </div>
+
+          <div class="field">
+            <label for="achternaam">Achternaam <span class="req">*</span></label>
+            <input type="text" id="achternaam" name="achternaam" autocomplete="family-name" required>
+            <span class="field__error" data-error-for="achternaam"></span> </div>
+
+          <div class="field field--half">
+            <label for="geboortedatum">Geboortedatum</label>
+            <input type="date" id="geboortedatum" name="geboortedatum">
+            <span class="field__error" data-error-for="geboortedatum"></span>
+          </div>
+
+          <div class="field field--half">
+            <label for="personeelsnummer">Personeelsnummer <span class="req">*</span></label>
+            <input type="text" id="personeelsnummer" name="personeelsnummer" placeholder="PN-1004" required>
+            <span class="field__error" data-error-for="personeelsnummer"></span> </div>
+        </fieldset>
+
+        <fieldset class="form__group">
+          <legend>Contactgegevens</legend>
+
+          <div class="field">
+            <label for="email">E-mailadres <span class="req">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <span class="field__error" data-error-for="email"></span> </div>
+
+          <div class="field">
+            <label for="telefoonnummer">Telefoonnummer</label>
+            <input type="tel" id="telefoonnummer" name="telefoonnummer" placeholder="06 12345678">
+            <span class="field__error" data-error-for="telefoonnummer"></span>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__group">
+          <legend>Rol binnen het gezelschap</legend>
+
+          <div class="field field--half">
+            <label for="afdeling">Afdeling <span class="req">*</span></label>
+            <select id="afdeling" name="afdeling" required>
+              <option value="" disabled selected>Kies een afdeling…</option>
+              <option value="Artistiek">Artistiek</option>
+              <option value="Techniek">Techniek</option>
+              <option value="Front of House">Front of House</option>
+              <option value="Productie">Productie</option>
+            </select>
+            <span class="field__error" data-error-for="afdeling"></span>
+          </div>
+
+          <div class="field field--half">
+            <label for="functie">Functie <span class="req">*</span></label>
+            <select id="functie" name="functie" required>
+              <option value="" disabled selected>Kies een functie…</option>
+              <option value="Regisseur">Regisseur</option>
+              <option value="Acteur">Acteur</option>
+              <option value="Lichttechnicus">Lichttechnicus</option>
+              <option value="Geluidstechnicus">Geluidstechnicus</option>
+              <option value="Decorbouwer">Decorbouwer</option>
+              <option value="Kassamedewerker">Kassamedewerker</option>
+              <option value="Producent">Producent</option>
+            </select>
+            <span class="field__error" data-error-for="functie"></span>
+          </div>
+
+          <div class="field">
+            <label for="datum_in_dienst">Datum in dienst <span class="req">*</span></label>
+            <input type="date" id="datum_in_dienst" name="datum_in_dienst" required>
+            <span class="field__error" data-error-for="datum_in_dienst"></span> </div>
+        </fieldset>
+
+        <div class="form__actions">
+          <button type="reset" class="btn btn--ghost">Wis formulier</button>
+          <button type="submit" class="btn btn--primary">
+            <span class="btn__label">Toevoegen aan de cast</span>
+          </button>
+        </div>
+
+        <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+
+    <section class="roster" id="roster" aria-labelledby="roster-heading">
+      <div class="roster__header">
+        <h2 id="roster-heading">Huidige bezetting</h2>
+        <span class="roster__count" id="roster-count">0 medewerkers</span>
+      </div>
+      <div class="roster__table-wrap">
+        <table class="roster__table">
+          <thead>
+            <tr>
+              <th scope="col">Naam</th>
+              <th scope="col">Personeelsnr.</th>
+              <th scope="col">Afdeling</th>
+              <th scope="col">Functie</th>
+              <th scope="col">In dienst</th>
+            </tr>
+          </thead>
+          <tbody id="roster-body">
+            </tbody>
+        </table>
+      </div>
+      <p class="roster__empty" id="roster-empty">Het podium is nog leeg — voeg de eerste medewerker toe.</p>
+    </section>
+
+  </div>
+
+  <div class="curtain-call" id="curtain-call" aria-hidden="true">
+    <div class="curtain-call__inner">
+      <p class="curtain-call__eyebrow">Welkom op de bezetting</p>
+      <p class="curtain-call__name" id="curtain-call-name"></p> <p class="curtain-call__role" id="curtain-call-role"></p> </div>
+  </div>
+
+  <div class="page-links">
+    <a href="/index.php">Terug naar home</a>
+    <a href="/overzicht%20medewerkers/index.php">Naar overzicht medewerkers</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

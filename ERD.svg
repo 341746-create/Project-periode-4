@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="780" viewBox="0 0 1160 780" font-family="Segoe UI, Inter, Arial, sans-serif">
+  <defs>
+    <marker id="one" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d4af37"/>
+    </marker>
+    <marker id="many" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
+      <path d="M2,2 L10,2 M2,6 L10,6 M2,10 L10,10" stroke="#7a7a7a" stroke-width="1.4" fill="none"/>
+    </marker>
+    <style>
+      .box   { fill:#ffffff; stroke:#d4af37; stroke-width:2; rx:10; }
+      .title { fill:#1a1206; font-weight:700; font-size:16px; }
+      .attr  { fill:#333; font-size:12.5px; }
+      .pk    { fill:#b8860b; font-weight:700; }
+      .fk    { fill:#1f6f8b; font-weight:600; }
+      .rel   { stroke:#7a7a7a; stroke-width:1.6; fill:none; }
+      .lbl   { fill:#555; font-size:11px; font-weight:600; }
+      .head  { fill:#1a1206; font-size:22px; font-weight:800; }
+      .sub   { fill:#888; font-size:13px; }
+    </style>
+  </defs>
+
+  <!-- Achtergrond -->
+  <rect x="0" y="0" width="1160" height="780" fill="#0f0f12"/>
+  <text x="40" y="44" class="head" fill="#d4af37">Aurora Theater — ERD</text>
+  <text x="40" y="66" class="sub" fill="#aaa">Entity Relationship Diagram · database: aurora_theater</text>
+
+  <!-- ===== Entiteiten ===== -->
+
+  <!-- gebruikers -->
+  <g>
+    <rect class="box" x="40" y="100" width="320" height="170" rx="10"/>
+    <text x="60" y="128" class="title">gebruikers</text>
+    <line x1="60" y1="138" x2="340" y2="138" stroke="#eee" stroke-width="1"/>
+    <text x="60" y="160" class="attr"><tspan class="pk">PK</tspan> id</text>
+    <text x="60" y="182" class="attr">naam</text>
+    <text x="60" y="204" class="attr">email</text>
+    <text x="60" y="226" class="attr">wachtwoord_hash</text>
+    <text x="60" y="248" class="attr">rol (klant/medewerker/admin)</text>
+  </g>
+
+  <!-- zalen -->
+  <g>
+    <rect class="box" x="800" y="100" width="320" height="150" rx="10"/>
+    <text x="820" y="128" class="title">zalen</text>
+    <line x1="820" y1="138" x2="1100" y2="138" stroke="#eee" stroke-width="1"/>
+    <text x="820" y="160" class="attr"><tspan class="pk">PK</tspan> id</text>
+    <text x="820" y="182" class="attr">naam</text>
+    <text x="820" y="204" class="attr">capaciteit</text>
+    <text x="820" y="226" class="attr">beschrijving</text>
+  </g>
+
+  <!-- voorstellingen -->
+  <g>
+    <rect class="box" x="420" y="310" width="320" height="190" rx="10"/>
+    <text x="440" y="338" class="title">voorstellingen</text>
+    <line x1="440" y1="348" x2="720" y2="348" stroke="#eee" stroke-width="1"/>
+    <text x="440" y="370" class="attr"><tspan class="pk">PK</tspan> id</text>
+    <text x="440" y="392" class="attr">titel</text>
+    <text x="440" y="414" class="attr">datum, aanvangstijd</text>
+    <text x="440" y="436" class="attr">prijs_per_stoel</text>
+    <text x="440" y="458" class="attr"><tspan class="fk">FK</tspan> zaal_id → zalen</text>
+    <text x="440" y="480" class="attr">beschikbare_stoelen, status</text>
+  </g>
+
+  <!-- stoelen -->
+  <g>
+    <rect class="box" x="800" y="470" width="320" height="160" rx="10"/>
+    <text x="820" y="498" class="title">stoelen</text>
+    <line x1="820" y1="508" x2="1100" y2="508" stroke="#eee" stroke-width="1"/>
+    <text x="820" y="530" class="attr"><tspan class="pk">PK</tspan> id</text>
+    <text x="820" y="552" class="attr">rij, nummer</text>
+    <text x="820" y="574" class="attr">categorie</text>
+    <text x="820" y="596" class="attr"><tspan class="fk">FK</tspan> voorstelling_id → voorstellingen</text>
+  </g>
+
+  <!-- reserveringen -->
+  <g>
+    <rect class="box" x="40" y="470" width="320" height="180" rx="10"/>
+    <text x="60" y="498" class="title">reserveringen</text>
+    <line x1="60" y1="508" x2="340" y2="508" stroke="#eee" stroke-width="1"/>
+    <text x="60" y="530" class="attr"><tspan class="pk">PK</tspan> id</text>
+    <text x="60" y="552" class="attr"><tspan class="fk">FK</tspan> gebruiker_id → gebruikers</text>
+    <text x="60" y="574" class="attr"><tspan class="fk">FK</tspan> voorstelling_id → voorstellingen</text>
+    <text x="60" y="596" class="attr">aantal_stoelen, totaalprijs</text>
+    <text x="60" y="618" class="attr">status, betaalmethode</text>
+  </g>
+
+  <!-- reservering_stoelen -->
+  <g>
+    <rect class="box" x="420" y="580" width="320" height="140" rx="10"/>
+    <text x="440" y="608" class="title">reservering_stoelen</text>
+    <line x1="440" y1="618" x2="720" y2="618" stroke="#eee" stroke-width="1"/>
+    <text x="440" y="640" class="attr"><tspan class="pk">PK</tspan> reservering_id</text>
+    <text x="440" y="662" class="attr"><tspan class="pk">PK</tspan> stoel_id</text>
+    <text x="440" y="690" class="attr"><tspan class="fk">FK</tspan> reservering_id → reserveringen</text>
+    <text x="440" y="710" class="attr"><tspan class="fk">FK</tspan> stoel_id → stoelen</text>
+  </g>
+
+  <!-- ===== Relaties ===== -->
+  <!-- zalen 1 - N voorstellingen -->
+  <path class="rel" d="M800,175 C620,210 600,300 590,310" marker-start="url(#one)" marker-end="url(#many)"/>
+  <text x="640" y="245" class="lbl">1 : N  (zaal_id)</text>
+
+  <!-- voorstellingen 1 - N stoelen -->
+  <path class="rel" d="M740,400 C780,430 790,450 800,470" marker-start="url(#one)" marker-end="url(#many)"/>
+  <text x="760" y="445" class="lbl">1 : N</text>
+
+  <!-- gebruikers 1 - N reserveringen -->
+  <path class="rel" d="M200,270 C150,330 120,400 110,470" marker-start="url(#one)" marker-end="url(#many)"/>
+  <text x="60" y="370" class="lbl">1 : N  (gebruiker_id)</text>
+
+  <!-- voorstellingen 1 - N reserveringen -->
+  <path class="rel" d="M520,400 C420,440 300,460 280,470" marker-start="url(#one)" marker-end="url(#many)"/>
+  <text x="330" y="445" class="lbl">1 : N  (voorstelling_id)</text>
+
+  <!-- reserveringen 1 - N reservering_stoelen -->
+  <path class="rel" d="M240,650 C320,665 360,665 420,650" marker-start="url(#one)" marker-end="url(#many)"/>
+  <text x="300" y="690" class="lbl">1 : N</text>
+
+  <!-- stoelen 1 - N reservering_stoelen -->
+  <path class="rel" d="M800,610 C720,640 700,650 680,640" marker-start="url(#one)" marker-end="url(#many)"/>
+  <text x="700" y="630" class="lbl">1 : N</text>
+
+  <!-- Legenda -->
+  <g transform="translate(880,690)">
+    <rect x="0" y="0" width="240" height="60" rx="8" fill="#1a1a1f" stroke="#333"/>
+    <text x="12" y="22" class="lbl" fill="#ccc">PK = primaire sleutel · FK = vreemde sleutel</text>
+    <text x="12" y="44" class="lbl" fill="#ccc">Relaties: 1 : N  (één : velen)</text>
+  </g>
+</svg>

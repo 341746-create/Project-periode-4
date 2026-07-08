@@ -1,0 +1,206 @@
+/* ── Reset ── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ── Achtergrond ── */
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #1a0000;
+    padding-top: 80px;
+}
+
+.bg-image {
+    position: fixed;
+    inset: 0;
+    background: url('defocused-background-luxurious-private-cinema-600nw-2599415605.webp') center / cover no-repeat;
+    filter: blur(4px) brightness(0.4) saturate(1.4);
+    transform: scale(1.05);
+    z-index: 0;
+}
+
+.bg-overlay {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 65% 35%, rgba(160, 0, 0, 0.55) 0%, transparent 65%),
+        radial-gradient(ellipse at 25% 75%, rgba(100, 0, 0, 0.45) 0%, transparent 60%);
+    z-index: 1;
+}
+
+/* ── Header / logo ── */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 32px;
+    z-index: 10;
+}
+
+.logo {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+.logo i {
+    color: #d4af37;
+    font-size: 1.3rem;
+    transition: transform 0.25s ease;
+}
+
+.logo:hover {
+    color: #d4af37;
+}
+
+.logo:hover i {
+    transform: rotate(-8deg) scale(1.05);
+}
+
+/* Inline SVG iconen (geen externe CDN nodig) */
+.icon {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    flex: none;
+}
+
+.logo .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #d4af37;
+}
+
+/* ── Card ── */
+.logout-card {
+    position: relative;
+    z-index: 2;
+    width: min(420px, 90vw);
+    background: rgba(18, 8, 8, 0.90);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 44px 36px 38px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(20px);
+    animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(16px) scale(0.97); }
+}
+
+/* ── Icoon ── */
+.logout-icon-wrap {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(204, 0, 0, 0.15);
+    border: 1.5px solid rgba(204, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+.logout-icon-wrap i {
+    font-size: 1.8rem;
+    color: #cc2222;
+}
+
+.logout-icon-wrap .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    color: #cc2222;
+}
+
+/* ── Tekst ── */
+.logout-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.4px;
+}
+
+.logout-subtitle {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+/* ── Knoppen ── */
+.btn-confirm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #b91c1c, #dc2626);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.2px;
+}
+
+.btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(185, 28, 28, 0.45);
+}
+
+.btn-confirm:active {
+    transform: translateY(0);
+}
+
+.btn-cancel {
+    color: #dc2626;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 4px 0;
+    transition: color 0.15s;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    color: #ff5555;
+    text-decoration: underline;
+}
+
+.icon-arrow {
+    width: 1em;
+    height: 1em;
+    transition: transform 0.2s;
+}
+
+.btn-confirm:hover .icon-arrow {
+    transform: translateX(3px);
+}

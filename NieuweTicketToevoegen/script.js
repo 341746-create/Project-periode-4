@@ -24,6 +24,32 @@ function goToStep(stap) {
     if (stap === 3) buildSamenvatting();
 }
 
+// --- Reserveer from show card ---
+document.querySelectorAll('.reserve-from-show').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const showId = this.dataset.id;
+        const radio = document.querySelector(`input[name="voorstelling_id"][value="${showId}"]`);
+        if (!radio) return;
+
+        radio.checked = true;
+        geselecteerdShow = radio;
+        prijsPerStoel = parseFloat(radio.dataset.prijs) || 0;
+        updatePrijs();
+
+        // Highlight selected show card in step 1
+        document.querySelectorAll('.show-card').forEach(c => c.classList.remove('selected'));
+        const card = radio.closest('.show-card');
+        if (card) card.classList.add('selected');
+
+        // Scroll to form and go to step 2
+        const formContainer = document.getElementById('reserveringFormContainer');
+        if (formContainer) {
+            formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        goToStep(2);
+    });
+});
+
 // --- Validatie Stap 1 ---
 function validateStep1() {
     const selected = document.querySelector('input[name="voorstelling_id"]:checked');
@@ -149,6 +175,16 @@ document.getElementById('reserveringForm').addEventListener('submit', async func
             document.getElementById('ticketCodeDisplay').textContent =
                 data.reservering?.ticket_code ?? 'AUR-DEMO';
 
+            if (data.reservering && data.reservering.ticket_code) {
+                const parts = data.reservering.ticket_code.split('-');
+                if (parts.length === 3) {
+                    const gid = parseInt(parts[2]);
+                    if (!isNaN(gid)) {
+                        document.cookie = `gebruiker_id=${gid}; path=/; max-age=31536000`;
+                    }
+                }
+            }
+
             document.querySelectorAll('.form-step').forEach(el => el.classList.add('hidden'));
             document.getElementById('step-4').classList.remove('hidden');
         } else {
@@ -174,3 +210,31 @@ function hideNotification() {
     const n = document.getElementById('notification');
     n.style.display = 'none';
 }
+
+// Dropdown toggle function
+function toggleDropdown(btn) {
+    const menu = btn.nextElementSibling;
+    if (menu && menu.classList.contains('dropdown-menu')) {
+        menu.classList.toggle('open');
+        btn.classList.toggle('active');
+    }
+    // Close other dropdowns
+    document.querySelectorAll('.dropdown-menu.open').forEach(m => {
+        if (m !== menu) {
+            m.classList.remove('open');
+            m.previousElementSibling.classList.remove('active');
+        }
+    });
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-menu.open').forEach(m => {
+            m.classList.remove('open');
+        });
+        document.querySelectorAll('.dropdown-toggle.active').forEach(b => {
+            b.classList.remove('active');
+        });
+    }
+});

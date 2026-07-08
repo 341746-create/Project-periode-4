@@ -22,14 +22,24 @@
   const simulateBtn   = document.getElementById('simulate-error-btn');
   const retryBtn      = document.getElementById('retry-btn');
 
-  // Mock "personeelslijst"
-  const medewerkers = [
-    { personeelsnummer: 'PN-1001', voornaam: 'Sanne',  achternaam: 'de Vries',  email: 's.devries@theater.nl',  afdeling: 'Artistiek',      functie: 'Regisseur',       datum_in_dienst: '2021-09-01', status: 'actief' },
-    { personeelsnummer: 'PN-1002', voornaam: 'Daan',   achternaam: 'Bakker',    email: 'd.bakker@theater.nl',   afdeling: 'Techniek',       functie: 'Lichttechnicus',  datum_in_dienst: '2022-02-15', status: 'actief' },
-    { personeelsnummer: 'PN-1003', voornaam: 'Layla',  achternaam: 'El Amrani', email: 'l.elamrani@theater.nl', afdeling: 'Front of House', functie: 'Kassamedewerker', datum_in_dienst: '2023-05-10', status: 'actief' },
-    { personeelsnummer: 'PN-1004', voornaam: 'Imraan', achternaam: 'Ghafoori',  email: 'i.ghafoori@theater.nl', afdeling: 'Productie',      functie: 'Producent',       datum_in_dienst: '2026-06-18', status: 'actief' },
-    { personeelsnummer: 'PN-0987', voornaam: 'Tobias', achternaam: 'Hendriks',  email: 't.hendriks@theater.nl', afdeling: 'Techniek',       functie: 'Decorbouwer',     datum_in_dienst: '2019-11-03', status: 'inactief' }
+  // Mock data en helperfuncties voor localStorage
+  const defaultMedewerkers = [
+    { personeelsnummer: 'PN-1001', voornaam: 'Sanne',  achternaam: 'de Vries',  email: 's.devries@auroratheater.nl',  afdeling: 'Artistiek',      functie: 'Regisseur',       datum_in_dienst: '2021-09-01', status: 'actief', telefoonnummer: '0612345678' },
+    { personeelsnummer: 'PN-1002', voornaam: 'Daan',   achternaam: 'Bakker',    email: 'd.bakker@auroratheater.nl',   afdeling: 'Techniek',       functie: 'Lichttechnicus',  datum_in_dienst: '2022-02-15', status: 'actief', telefoonnummer: '0623456789' },
+    { personeelsnummer: 'PN-1003', voornaam: 'Layla',  achternaam: 'El Amrani', email: 'l.elamrani@auroratheater.nl', afdeling: 'Front of House', functie: 'Kassamedewerker', datum_in_dienst: '2023-05-10', status: 'actief', telefoonnummer: '0634567890' },
+    { personeelsnummer: 'PN-1004', voornaam: 'Imraan', achternaam: 'Ghafoori',  email: 'i.ghafoori@auroratheater.nl', afdeling: 'Productie',      functie: 'Producent',       datum_in_dienst: '2026-06-18', status: 'actief', telefoonnummer: '' },
+    { personeelsnummer: 'PN-0987', voornaam: 'Tobias', achternaam: 'Hendriks',  email: 't.hendriks@auroratheater.nl', afdeling: 'Techniek',       functie: 'Decorbouwer',     datum_in_dienst: '2019-11-03', status: 'inactief', telefoonnummer: '' },
+    { personeelsnummer: 'PN-1005', voornaam: 'Anouk',  achternaam: 'de Jong',   email: 'a.dejong@auroratheater.nl',   afdeling: 'Front of House', functie: 'Kassamedewerker', datum_in_dienst: '2024-01-10', status: 'actief', telefoonnummer: '' }
   ];
+
+  function getEmployees() {
+      let list = localStorage.getItem('aurora_theater_medewerkers');
+      if (!list) {
+          localStorage.setItem('aurora_theater_medewerkers', JSON.stringify(defaultMedewerkers));
+          return defaultMedewerkers;
+      }
+      return JSON.parse(list);
+  }
 
   function escapeHtml(str) {
     return String(str)
@@ -47,11 +57,12 @@
   }
 
   function getFilteredMedewerkers() {
+    const list = getEmployees();
     // Veiligheidscheck voor als invoervelden niet op de huidige pagina staan
     const zoekterm = zoekInput ? (zoekInput.value || '').trim().toLowerCase() : '';
     const afdeling = afdelingSelect ? afdelingSelect.value : '';
 
-    return medewerkers.filter((m) => {
+    return list.filter((m) => {
       const matchesZoek = !zoekterm ||
         m.voornaam.toLowerCase().includes(zoekterm) ||
         m.achternaam.toLowerCase().includes(zoekterm) ||
@@ -141,3 +152,30 @@
   // Eerste render bij het laden van de pagina
   renderRoster();
 })();
+// Dropdown toggle function
+function toggleDropdown(btn) {
+    const menu = btn.nextElementSibling;
+    if (menu && menu.classList.contains('dropdown-menu')) {
+        menu.classList.toggle('open');
+        btn.classList.toggle('active');
+    }
+    // Close other dropdowns
+    document.querySelectorAll('.dropdown-menu.open').forEach(m => {
+        if (m !== menu) {
+            m.classList.remove('open');
+            m.previousElementSibling.classList.remove('active');
+        }
+    });
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-menu.open').forEach(m => {
+            m.classList.remove('open');
+        });
+        document.querySelectorAll('.dropdown-toggle.active').forEach(b => {
+            b.classList.remove('active');
+        });
+    }
+});

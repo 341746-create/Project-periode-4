@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aurora Theater — Inloggen op uw account">
+    <title>Inloggen — Aurora Theater</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Cinema achtergrond -->
+    <div class="theater-bg-container">
+        <img src="defocused-background-luxurious-private-cinema-600nw-2599415605.webp"
+            alt="Aurora Theater achtergrond" class="theater-image">
+        <div class="background-overlay"></div>
+    </div>
+
+    <!-- Login kaart -->
+    <div class="login-container">
+        <a href="/Homepaginamaken/index.php" class="login-brand">
+          <i class="fa-solid fa-masks-theater"></i> Aurora Theater
+        </a>
+
+        <div class="login-header">
+            <h1>Welcome Back</h1>
+            <p>Reserve your seat under the spotlight</p>
+        </div>
+
+        <!-- Formulier POST naar de login-handler in deze map -->
+        <form class="login-form" id="loginForm" method="POST" action="auth.php">
+
+            <div class="login-error" id="loginError" style="display:none;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="loginErrorText">Ongeldig e-mailadres of wachtwoord.</span>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email"
+                        placeholder="e.g., name@example.com" required autocomplete="email">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password"
+                        placeholder="Enter your password" required autocomplete="current-password">
+                    <button type="button" id="togglePassword" class="toggle-password">
+                        <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <label class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    Remember me
+                </label>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-login">
+                Sign In <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <button type="button" class="btn-quick-admin" id="quickAdminBtn">
+                <i class="fa-solid fa-user-shield"></i> Snel inloggen als beheerder
+            </button>
+        </form>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

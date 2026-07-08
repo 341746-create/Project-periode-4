@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overzicht medewerkers — Het Repertoire</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="house-glow" aria-hidden="true"></div>
+
+  <div class="curtain-rig" aria-hidden="true">
+    <div class="curtain curtain--left">
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="curtain curtain--right">
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+      <div class="curtain__fold"></div>
+    </div>
+    <div class="valance"></div>
+  </div>
+
+  <div class="spotlight" aria-hidden="true"></div>
+
+  <div class="stage">
+
+    <header class="masthead">
+      <p class="masthead__eyebrow">Het Repertoire — Personeelsregistratie</p>
+      <h1 class="masthead__title">Overzicht<br><em>medewerkers</em></h1>
+      <p class="masthead__sub">De volledige bezetting van het gezelschap, in&nbsp;&eacute;&eacute;n programmaboekje.</p>
+    </header>
+
+    <main class="playbill" id="playbill">
+
+      <div class="playbill__ribbon">
+        <span>Programmaboekje info</span>
+      </div>
+
+      <form class="toolbar" id="toolbar">
+        <div class="field field--search">
+          <label for="zoeken">Zoek op naam of personeelsnummer</label>
+          <input type="text" id="zoeken" name="zoeken" placeholder="Bijv. “de Vries” of “PN-1002”" autocomplete="off">
+        </div>
+
+        <div class="field field--filter">
+          <label for="afdeling">Afdeling</label>
+          <select id="afdeling" name="afdeling">
+            <option value="">Alle afdelingen</option>
+            <option value="Artistiek">Artistiek</option>
+            <option value="Techniek">Techniek</option>
+            <option value="Front of House">Front of House</option>
+            <option value="Productie">Productie</option>
+          </select>
+        </div>
+
+        <div class="toolbar__actions">
+          <button type="submit" class="btn btn--primary">Filteren</button>
+          <button type="button" class="btn btn--ghost" id="reset-filters">Wis filters</button>
+        </div>
+      </form>
+
+      <div class="roster has-rows" id="roster">
+        <div class="roster__header">
+          <h2>Huidige bezetting</h2>
+          <span class="roster__count" id="roster-count">0 medewerkers</span>
+        </div>
+
+        <div class="roster__table-wrap">
+          <table class="roster__table">
+            <thead>
+              <tr>
+                <th scope="col">Naam</th>
+                <th scope="col">Personeelsnr.</th>
+                <th scope="col">Afdeling</th>
+                <th scope="col">Functie</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">In dienst</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="roster-body">
+              </tbody>
+          </table>
+        </div>
+
+        <p class="roster__empty" id="roster-empty">Geen medewerkers gevonden die passen bij deze zoekopdracht.</p>
+      </div>
+    </main>
+
+    <main class="playbill playbill--error" id="playbill-error" hidden>
+      <div class="playbill__ribbon playbill__ribbon--error"><span>Geannuleerd</span></div>
+      <div class="curtain-down" aria-hidden="true"></div>
+      <h2 class="error__title">De voorstelling kan nu niet doorgaan</h2>
+      <p class="error__body">
+        Er is een verbinding met de databank niet gelukt. Probeer het later opnieuw of neem contact op met de beheerder.
+      </p>
+      <button type="button" class="btn btn--primary" id="retry-btn">Opnieuw proberen</button>
+    </main>
+
+    <p class="demo-toggle">
+      <a class="link-btn" href="/index.php">Terug naar home</a>
+      <button type="button" id="simulate-error-btn" class="link-btn">Simuleer een laadfout (Scenario 2)</button>
+    </p>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

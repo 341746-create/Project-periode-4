@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"name": "NieuweTicketToevoegen",
+			"path": "../NieuweTicketToevoegen"
+		},
+		{
+			"name": "Ticket Reservering Aurora",
+			"path": "../../../Ticket Reservering Aurora"
+		},
+		{
+			"name": "nieuwe_ticket",
+			"path": "nieuwe_ticket"
+		},
+		{
+			"name": "ticket_overzicht",
+			"path": "ticket_overzicht"
+		},
+		{
+			"name": "ticket_scannen",
+			"path": "ticket_scannen"
+		}
+	],
+	"settings": {}
+}
